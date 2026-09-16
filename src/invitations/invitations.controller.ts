@@ -77,16 +77,27 @@ export class InvitationsController {
   @Post(':id/reject')
   async reject(
     @Req() request: AuthenticatedRequest,
-
-    @Param(
-      'id',
-      ParseIntPipe,
-    )
-    invitationId: number,
+    @Param('id', ParseIntPipe) invitationId: number,
   ) {
     return this.invitationsService.reject(
       request.user.sub,
       invitationId,
     );
   }
-}
+
+  // =========================================
+  // 초대 수락
+  // =========================================
+
+  @UseGuards(AuthGuard)
+  @Post(':id/accept')
+  async accept(
+    @Req() request: AuthenticatedRequest,
+    @Param('id', ParseIntPipe) invitationId: number,
+  ) {
+    return this.invitationsService.accept(
+      request.user.sub,
+      invitationId,
+    );
+  }
+} // ← InvitationsController가 여기서 끝나야 함

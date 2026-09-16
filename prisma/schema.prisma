@@ -8,8 +8,8 @@ datasource db {
 }
 
 model User {
-  id           Int      @id @default(autoincrement())
-  userId       String   @unique
+  id           Int    @id @default(autoincrement())
+  userId       String @unique
   passwordHash String
   nickname     String
 
@@ -18,6 +18,12 @@ model User {
 
   sentInvitations     Invitation[] @relation("SentInvitations")
   receivedInvitations Invitation[] @relation("ReceivedInvitations")
+
+  friendshipsAsUser1 Friendship[] @relation("FriendshipUser1")
+  friendshipsAsUser2 Friendship[] @relation("FriendshipUser2")
+
+  chatRoomsAsUser1 ChatRoom[] @relation("ChatRoomUser1")
+  chatRoomsAsUser2 ChatRoom[] @relation("ChatRoomUser2")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -99,4 +105,37 @@ enum InvitationStatus {
   PENDING
   ACCEPTED
   REJECTED
+}
+
+model Friendship {
+  id Int @id @default(autoincrement())
+
+  user1Id Int
+  user2Id Int
+
+  user1 User @relation("FriendshipUser1", fields: [user1Id], references: [id], onDelete: Cascade)
+  user2 User @relation("FriendshipUser2", fields: [user2Id], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([user1Id, user2Id])
+  @@index([user1Id])
+  @@index([user2Id])
+}
+
+model ChatRoom {
+  id Int @id @default(autoincrement())
+
+  user1Id Int
+  user2Id Int
+
+  user1 User @relation("ChatRoomUser1", fields: [user1Id], references: [id], onDelete: Cascade)
+  user2 User @relation("ChatRoomUser2", fields: [user2Id], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([user1Id, user2Id])
+  @@index([user1Id])
+  @@index([user2Id])
 }

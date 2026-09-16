@@ -168,6 +168,18 @@ export class InvitationsService {
     userId: number,
     invitationId: number,
   ) {
+    // 기존 reject 코드
+    // ...
+  }
+
+  // =========================================
+  // 초대 수락
+  // =========================================
+
+  async accept(
+    userId: number,
+    invitationId: number,
+  ) {
     const invitation =
       await this.prisma.invitation.findUnique({
         where: {
@@ -181,31 +193,87 @@ export class InvitationsService {
       );
     }
 
-    // 받은 사람만 거절 가능
-    if (
-      invitation.receiverId !== userId
-    ) {
+    if (invitation.receiverId !== userId) {
       throw new BadRequestException(
-        '이 초대장을 거절할 권한이 없습니다.',
+        '이 초대장을 수락할 권한이 없습니다.',
       );
     }
 
-    if (
-      invitation.status !== 'PENDING'
-    ) {
+    if (invitation.status !== 'PENDING') {
       throw new BadRequestException(
         '이미 처리된 초대장입니다.',
       );
     }
 
-    return this.prisma.invitation.update({
-      where: {
-        id: invitationId,
-      },
+    const user1Id = Math.min(
+      invitation.senderId,
+      invitation.receiverId,
+    );
 
-      data: {
-        status: 'REJECTED',
-      },
-    });
+    const user2Id = Math.max(
+      invitation.senderId,
+      invitation.receiverId,
+    );
+
+    const existingFriendship =
+      await this.prisma.friendship.findUnique({
+        where: {
+          user1Id_user2Id: {
+            user1Id,
+            user2Id,
+          },
+        },
+      });
+
+    if (existingFriendship) {
+      throw new ConflictException(
+        '이미 친구인 사용자입니다.',
+      );
+    }
+
+    const result =
+      await this.prisma.$transaction(
+        async (tx) => {
+          const friendship =
+            await tx.friendship.create({
+              data: {
+                user1Id,
+                user2Id,
+              },
+            });
+
+          const chatRoom =
+            await tx.chatRoom.create({
+              data: {
+                user1Id,
+                user2Id,
+              },
+            });
+
+          const acceptedInvitation =
+            await tx.invitation.update({
+              where: {
+                id: invitationId,
+              },
+
+              data: {
+                status: 'ACCEPTED',
+              },
+            });
+
+          return {
+            invitation: acceptedInvitation,
+            friendship,
+            chatRoom,
+          };
+        },
+      );
+
+    return {
+      message: '친구 초대장을 수락했습니다.',
+      invitationId: result.invitation.id,
+      friendshipId: result.friendship.id,
+      chatRoomId: result.chatRoom.id,
+    };
   }
-}
+} // ← InvitationsService 끝

@@ -401,7 +401,9 @@ export const ModelName = {
   SpotifyAccount: 'SpotifyAccount',
   TrackAnalysis: 'TrackAnalysis',
   UserLocation: 'UserLocation',
-  Invitation: 'Invitation'
+  Invitation: 'Invitation',
+  Friendship: 'Friendship',
+  ChatRoom: 'ChatRoom'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -417,7 +419,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "spotifyAccount" | "trackAnalysis" | "userLocation" | "invitation"
+    modelProps: "user" | "spotifyAccount" | "trackAnalysis" | "userLocation" | "invitation" | "friendship" | "chatRoom"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -751,6 +753,138 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Friendship: {
+      payload: Prisma.$FriendshipPayload<ExtArgs>
+      fields: Prisma.FriendshipFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.FriendshipFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FriendshipPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.FriendshipFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FriendshipPayload>
+        }
+        findFirst: {
+          args: Prisma.FriendshipFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FriendshipPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.FriendshipFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FriendshipPayload>
+        }
+        findMany: {
+          args: Prisma.FriendshipFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FriendshipPayload>[]
+        }
+        create: {
+          args: Prisma.FriendshipCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FriendshipPayload>
+        }
+        createMany: {
+          args: Prisma.FriendshipCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.FriendshipDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FriendshipPayload>
+        }
+        update: {
+          args: Prisma.FriendshipUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FriendshipPayload>
+        }
+        deleteMany: {
+          args: Prisma.FriendshipDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.FriendshipUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.FriendshipUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FriendshipPayload>
+        }
+        aggregate: {
+          args: Prisma.FriendshipAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateFriendship>
+        }
+        groupBy: {
+          args: Prisma.FriendshipGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FriendshipGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.FriendshipCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FriendshipCountAggregateOutputType> | number
+        }
+      }
+    }
+    ChatRoom: {
+      payload: Prisma.$ChatRoomPayload<ExtArgs>
+      fields: Prisma.ChatRoomFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ChatRoomFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatRoomPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ChatRoomFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatRoomPayload>
+        }
+        findFirst: {
+          args: Prisma.ChatRoomFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatRoomPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ChatRoomFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatRoomPayload>
+        }
+        findMany: {
+          args: Prisma.ChatRoomFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatRoomPayload>[]
+        }
+        create: {
+          args: Prisma.ChatRoomCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatRoomPayload>
+        }
+        createMany: {
+          args: Prisma.ChatRoomCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.ChatRoomDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatRoomPayload>
+        }
+        update: {
+          args: Prisma.ChatRoomUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatRoomPayload>
+        }
+        deleteMany: {
+          args: Prisma.ChatRoomDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ChatRoomUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.ChatRoomUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatRoomPayload>
+        }
+        aggregate: {
+          args: Prisma.ChatRoomAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateChatRoom>
+        }
+        groupBy: {
+          args: Prisma.ChatRoomGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ChatRoomGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ChatRoomCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ChatRoomCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -861,6 +995,27 @@ export const InvitationScalarFieldEnum = {
 } as const
 
 export type InvitationScalarFieldEnum = (typeof InvitationScalarFieldEnum)[keyof typeof InvitationScalarFieldEnum]
+
+
+export const FriendshipScalarFieldEnum = {
+  id: 'id',
+  user1Id: 'user1Id',
+  user2Id: 'user2Id',
+  createdAt: 'createdAt'
+} as const
+
+export type FriendshipScalarFieldEnum = (typeof FriendshipScalarFieldEnum)[keyof typeof FriendshipScalarFieldEnum]
+
+
+export const ChatRoomScalarFieldEnum = {
+  id: 'id',
+  user1Id: 'user1Id',
+  user2Id: 'user2Id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ChatRoomScalarFieldEnum = (typeof ChatRoomScalarFieldEnum)[keyof typeof ChatRoomScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1152,6 +1307,8 @@ export type GlobalOmitConfig = {
   trackAnalysis?: Prisma.TrackAnalysisOmit
   userLocation?: Prisma.UserLocationOmit
   invitation?: Prisma.InvitationOmit
+  friendship?: Prisma.FriendshipOmit
+  chatRoom?: Prisma.ChatRoomOmit
 }
 
 /* Types for Logging */

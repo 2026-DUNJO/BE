@@ -66,3 +66,13 @@ export type UserLocation = Prisma.UserLocationModel
  * 
  */
 export type Invitation = Prisma.InvitationModel
+/**
+ * Model Friendship
+ * 
+ */
+export type Friendship = Prisma.FriendshipModel
+/**
+ * Model ChatRoom
+ * 
+ */
+export type ChatRoom = Prisma.ChatRoomModel
