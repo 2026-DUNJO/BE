@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 
 import { LastfmModule } from '../lastfm/lastfm.module.js';
+import { LocationModule } from '../location/location.module.js';
+import { SpotifyModule } from '../spotify/spotify.module.js';
 
 import { MatchingController } from './matching.controller.js';
 import { MatchingService } from './matching.service.js';
@@ -8,6 +10,8 @@ import { MatchingService } from './matching.service.js';
 @Module({
   imports: [
     LastfmModule,
+    LocationModule,
+    SpotifyModule,
   ],
 
   controllers: [

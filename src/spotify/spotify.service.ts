@@ -206,6 +206,7 @@ export class SpotifyService {
     );
 
     if (!profileResponse.ok) {
+
       throw new BadRequestException(
         'Spotify 사용자 정보를 가져오지 못했습니다.',
       );
