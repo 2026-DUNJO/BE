@@ -338,23 +338,21 @@ Each tag should:
 2. matchReason
 
 Write one short Korean sentence explaining
-why the users' tastes connected.
+why the users' recent listening histories connected.
 
 Use concrete artist or track names when useful.
 
-Keep it natural and easy to understand.
+Only describe what can be observed from the supplied
+recent listening and connection data.
 
-Do not mention:
-- Coverage
-- Strength
-- algorithms
-- mathematical formulas
+Prefer expressions such as:
+- "최근 재생 기록에서"
+- "함께 발견됐어요"
+- "취향의 접점이 보여요"
 
-Do not exaggerate the relationship between
-the users.
-
-Do not say they have identical tastes unless
-the supplied data actually supports that.
+Do not claim that a user "likes", "prefers",
+or "frequently listens to" an artist or track
+unless the supplied data explicitly proves it.
               `.trim(),
             },
 
