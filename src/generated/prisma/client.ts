@@ -56,3 +56,8 @@ export type SpotifyAccount = Prisma.SpotifyAccountModel
  * 
  */
 export type TrackAnalysis = Prisma.TrackAnalysisModel
+/**
+ * Model UserLocation
+ * 
+ */
+export type UserLocation = Prisma.UserLocationModel

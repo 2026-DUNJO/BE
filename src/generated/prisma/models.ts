@@ -11,4 +11,5 @@
 export type * from './models/User.js'
 export type * from './models/SpotifyAccount.js'
 export type * from './models/TrackAnalysis.js'
+export type * from './models/UserLocation.js'
 export type * from './commonInputTypes.js'

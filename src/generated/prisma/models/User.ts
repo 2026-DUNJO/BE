@@ -225,6 +225,7 @@ export type UserWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   spotifyAccount?: Prisma.XOR<Prisma.SpotifyAccountNullableScalarRelationFilter, Prisma.SpotifyAccountWhereInput> | null
+  location?: Prisma.XOR<Prisma.UserLocationNullableScalarRelationFilter, Prisma.UserLocationWhereInput> | null
 }
 
 export type UserOrderByWithRelationInput = {
@@ -235,6 +236,7 @@ export type UserOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   spotifyAccount?: Prisma.SpotifyAccountOrderByWithRelationInput
+  location?: Prisma.UserLocationOrderByWithRelationInput
   _relevance?: Prisma.UserOrderByRelevanceInput
 }
 
@@ -249,6 +251,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   spotifyAccount?: Prisma.XOR<Prisma.SpotifyAccountNullableScalarRelationFilter, Prisma.SpotifyAccountWhereInput> | null
+  location?: Prisma.XOR<Prisma.UserLocationNullableScalarRelationFilter, Prisma.UserLocationWhereInput> | null
 }, "id" | "userId">
 
 export type UserOrderByWithAggregationInput = {
@@ -284,6 +287,7 @@ export type UserCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   spotifyAccount?: Prisma.SpotifyAccountCreateNestedOneWithoutUserInput
+  location?: Prisma.UserLocationCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -294,6 +298,7 @@ export type UserUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   spotifyAccount?: Prisma.SpotifyAccountUncheckedCreateNestedOneWithoutUserInput
+  location?: Prisma.UserLocationUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -303,6 +308,7 @@ export type UserUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   spotifyAccount?: Prisma.SpotifyAccountUpdateOneWithoutUserNestedInput
+  location?: Prisma.UserLocationUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -313,6 +319,7 @@ export type UserUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   spotifyAccount?: Prisma.SpotifyAccountUncheckedUpdateOneWithoutUserNestedInput
+  location?: Prisma.UserLocationUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -417,12 +424,27 @@ export type UserUpdateOneRequiredWithoutSpotifyAccountNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSpotifyAccountInput, Prisma.UserUpdateWithoutSpotifyAccountInput>, Prisma.UserUncheckedUpdateWithoutSpotifyAccountInput>
 }
 
+export type UserCreateNestedOneWithoutLocationInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutLocationInput, Prisma.UserUncheckedCreateWithoutLocationInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutLocationInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutLocationNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutLocationInput, Prisma.UserUncheckedCreateWithoutLocationInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutLocationInput
+  upsert?: Prisma.UserUpsertWithoutLocationInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutLocationInput, Prisma.UserUpdateWithoutLocationInput>, Prisma.UserUncheckedUpdateWithoutLocationInput>
+}
+
 export type UserCreateWithoutSpotifyAccountInput = {
   userId: string
   passwordHash: string
   nickname: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  location?: Prisma.UserLocationCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSpotifyAccountInput = {
@@ -432,6 +454,7 @@ export type UserUncheckedCreateWithoutSpotifyAccountInput = {
   nickname: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  location?: Prisma.UserLocationUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSpotifyAccountInput = {
@@ -456,6 +479,7 @@ export type UserUpdateWithoutSpotifyAccountInput = {
   nickname?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  location?: Prisma.UserLocationUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSpotifyAccountInput = {
@@ -465,6 +489,61 @@ export type UserUncheckedUpdateWithoutSpotifyAccountInput = {
   nickname?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  location?: Prisma.UserLocationUncheckedUpdateOneWithoutUserNestedInput
+}
+
+export type UserCreateWithoutLocationInput = {
+  userId: string
+  passwordHash: string
+  nickname: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  spotifyAccount?: Prisma.SpotifyAccountCreateNestedOneWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutLocationInput = {
+  id?: number
+  userId: string
+  passwordHash: string
+  nickname: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  spotifyAccount?: Prisma.SpotifyAccountUncheckedCreateNestedOneWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutLocationInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutLocationInput, Prisma.UserUncheckedCreateWithoutLocationInput>
+}
+
+export type UserUpsertWithoutLocationInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutLocationInput, Prisma.UserUncheckedUpdateWithoutLocationInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutLocationInput, Prisma.UserUncheckedCreateWithoutLocationInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutLocationInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutLocationInput, Prisma.UserUncheckedUpdateWithoutLocationInput>
+}
+
+export type UserUpdateWithoutLocationInput = {
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  nickname?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  spotifyAccount?: Prisma.SpotifyAccountUpdateOneWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutLocationInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  nickname?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  spotifyAccount?: Prisma.SpotifyAccountUncheckedUpdateOneWithoutUserNestedInput
 }
 
 
@@ -477,6 +556,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   createdAt?: boolean
   updatedAt?: boolean
   spotifyAccount?: boolean | Prisma.User$spotifyAccountArgs<ExtArgs>
+  location?: boolean | Prisma.User$locationArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
 
@@ -493,12 +573,14 @@ export type UserSelectScalar = {
 export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "passwordHash" | "nickname" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   spotifyAccount?: boolean | Prisma.User$spotifyAccountArgs<ExtArgs>
+  location?: boolean | Prisma.User$locationArgs<ExtArgs>
 }
 
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
   objects: {
     spotifyAccount: Prisma.$SpotifyAccountPayload<ExtArgs> | null
+    location: Prisma.$UserLocationPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -848,6 +930,7 @@ readonly fields: UserFieldRefs;
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   spotifyAccount<T extends Prisma.User$spotifyAccountArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$spotifyAccountArgs<ExtArgs>>): Prisma.Prisma__SpotifyAccountClient<runtime.Types.Result.GetResult<Prisma.$SpotifyAccountPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  location<T extends Prisma.User$locationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$locationArgs<ExtArgs>>): Prisma.Prisma__UserLocationClient<runtime.Types.Result.GetResult<Prisma.$UserLocationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1247,6 +1330,25 @@ export type User$spotifyAccountArgs<ExtArgs extends runtime.Types.Extensions.Int
    */
   include?: Prisma.SpotifyAccountInclude<ExtArgs> | null
   where?: Prisma.SpotifyAccountWhereInput
+}
+
+/**
+ * User.location
+ */
+export type User$locationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserLocation
+   */
+  select?: Prisma.UserLocationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserLocation
+   */
+  omit?: Prisma.UserLocationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserLocationInclude<ExtArgs> | null
+  where?: Prisma.UserLocationWhereInput
 }
 
 /**

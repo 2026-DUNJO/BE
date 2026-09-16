@@ -10,9 +10,10 @@ import { LastfmModule } from './lastfm/lastfm.module.js';
 import { MusicModule } from './music/music.module.js';
 import { GroqModule } from './groq/groq.module.js';
 import { MatchingModule } from './matching/matching.module.js';
+import { LocationModule } from './location/location.module.js';
 
 @Module({
-  imports: [PrismaModule, AuthModule, UsersModule, SpotifyModule, LastfmModule, MusicModule, GroqModule, MatchingModule],
+  imports: [PrismaModule, AuthModule, UsersModule, SpotifyModule, LastfmModule, MusicModule, GroqModule, MatchingModule, LocationModule],
   controllers: [AppController],
   providers: [AppService],
 })

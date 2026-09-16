@@ -399,7 +399,8 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 export const ModelName = {
   User: 'User',
   SpotifyAccount: 'SpotifyAccount',
-  TrackAnalysis: 'TrackAnalysis'
+  TrackAnalysis: 'TrackAnalysis',
+  UserLocation: 'UserLocation'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -415,7 +416,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "spotifyAccount" | "trackAnalysis"
+    modelProps: "user" | "spotifyAccount" | "trackAnalysis" | "userLocation"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -617,6 +618,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    UserLocation: {
+      payload: Prisma.$UserLocationPayload<ExtArgs>
+      fields: Prisma.UserLocationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.UserLocationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserLocationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.UserLocationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserLocationPayload>
+        }
+        findFirst: {
+          args: Prisma.UserLocationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserLocationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.UserLocationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserLocationPayload>
+        }
+        findMany: {
+          args: Prisma.UserLocationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserLocationPayload>[]
+        }
+        create: {
+          args: Prisma.UserLocationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserLocationPayload>
+        }
+        createMany: {
+          args: Prisma.UserLocationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.UserLocationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserLocationPayload>
+        }
+        update: {
+          args: Prisma.UserLocationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserLocationPayload>
+        }
+        deleteMany: {
+          args: Prisma.UserLocationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.UserLocationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.UserLocationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserLocationPayload>
+        }
+        aggregate: {
+          args: Prisma.UserLocationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateUserLocation>
+        }
+        groupBy: {
+          args: Prisma.UserLocationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserLocationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.UserLocationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserLocationCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -699,6 +766,17 @@ export const TrackAnalysisScalarFieldEnum = {
 } as const
 
 export type TrackAnalysisScalarFieldEnum = (typeof TrackAnalysisScalarFieldEnum)[keyof typeof TrackAnalysisScalarFieldEnum]
+
+
+export const UserLocationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UserLocationScalarFieldEnum = (typeof UserLocationScalarFieldEnum)[keyof typeof UserLocationScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -970,6 +1048,7 @@ export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
   spotifyAccount?: Prisma.SpotifyAccountOmit
   trackAnalysis?: Prisma.TrackAnalysisOmit
+  userLocation?: Prisma.UserLocationOmit
 }
 
 /* Types for Logging */
