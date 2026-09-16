@@ -54,7 +54,8 @@ export const ModelName = {
   User: 'User',
   SpotifyAccount: 'SpotifyAccount',
   TrackAnalysis: 'TrackAnalysis',
-  UserLocation: 'UserLocation'
+  UserLocation: 'UserLocation',
+  Invitation: 'Invitation'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -129,6 +130,23 @@ export const UserLocationScalarFieldEnum = {
 export type UserLocationScalarFieldEnum = (typeof UserLocationScalarFieldEnum)[keyof typeof UserLocationScalarFieldEnum]
 
 
+export const InvitationScalarFieldEnum = {
+  id: 'id',
+  senderId: 'senderId',
+  receiverId: 'receiverId',
+  spotifyTrackId: 'spotifyTrackId',
+  trackTitle: 'trackTitle',
+  trackArtist: 'trackArtist',
+  albumImage: 'albumImage',
+  spotifyUrl: 'spotifyUrl',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type InvitationScalarFieldEnum = (typeof InvitationScalarFieldEnum)[keyof typeof InvitationScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -195,4 +213,15 @@ export const TrackAnalysisOrderByRelevanceFieldEnum = {
 } as const
 
 export type TrackAnalysisOrderByRelevanceFieldEnum = (typeof TrackAnalysisOrderByRelevanceFieldEnum)[keyof typeof TrackAnalysisOrderByRelevanceFieldEnum]
+
+
+export const InvitationOrderByRelevanceFieldEnum = {
+  spotifyTrackId: 'spotifyTrackId',
+  trackTitle: 'trackTitle',
+  trackArtist: 'trackArtist',
+  albumImage: 'albumImage',
+  spotifyUrl: 'spotifyUrl'
+} as const
+
+export type InvitationOrderByRelevanceFieldEnum = (typeof InvitationOrderByRelevanceFieldEnum)[keyof typeof InvitationOrderByRelevanceFieldEnum]
 

@@ -8,13 +8,16 @@ datasource db {
 }
 
 model User {
-  id           Int    @id @default(autoincrement())
-  userId       String @unique
+  id           Int      @id @default(autoincrement())
+  userId       String   @unique
   passwordHash String
   nickname     String
 
   spotifyAccount SpotifyAccount?
   location       UserLocation?
+
+  sentInvitations     Invitation[] @relation("SentInvitations")
+  receivedInvitations Invitation[] @relation("ReceivedInvitations")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -66,4 +69,34 @@ model UserLocation {
   longitude Float
 
   updatedAt DateTime @updatedAt
+}
+
+model Invitation {
+  id Int @id @default(autoincrement())
+
+  senderId   Int
+  receiverId Int
+
+  sender   User @relation("SentInvitations", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver User @relation("ReceivedInvitations", fields: [receiverId], references: [id], onDelete: Cascade)
+
+  spotifyTrackId String
+  trackTitle     String
+  trackArtist    String
+  albumImage     String? @db.Text
+  spotifyUrl     String? @db.Text
+
+  status InvitationStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([senderId])
+  @@index([receiverId])
+}
+
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
 }

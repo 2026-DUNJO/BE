@@ -37,3 +37,8 @@ export type TrackAnalysis = Prisma.TrackAnalysisModel
  * 
  */
 export type UserLocation = Prisma.UserLocationModel
+/**
+ * Model Invitation
+ * 
+ */
+export type Invitation = Prisma.InvitationModel
