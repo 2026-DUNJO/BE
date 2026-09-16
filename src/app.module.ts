@@ -6,9 +6,11 @@ import { AuthModule } from './auth/auth.module.js';
 import { PrismaModule } from './prisma/prisma.module.js';
 import { UsersModule } from './users/users.module.js';
 import { SpotifyModule } from './spotify/spotify.module.js';
+import { LastfmModule } from './lastfm/lastfm.module.js';
+import { MusicModule } from './music/music.module.js';
 
 @Module({
-  imports: [PrismaModule, AuthModule, UsersModule, SpotifyModule],
+  imports: [PrismaModule, AuthModule, UsersModule, SpotifyModule, LastfmModule, MusicModule],
   controllers: [AppController],
   providers: [AppService],
 })

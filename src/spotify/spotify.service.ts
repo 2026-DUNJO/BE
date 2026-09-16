@@ -20,6 +20,25 @@ interface SpotifyProfile {
   display_name: string | null;
 }
 
+interface SpotifyCurrentlyPlaying {
+  is_playing: boolean;
+  item: {
+    id: string;
+    name: string;
+    artists: {
+      name: string;
+    }[];
+    album: {
+      images: {
+        url: string;
+      }[];
+    };
+    external_urls: {
+      spotify: string;
+    };
+  } | null;
+}
+
 @Injectable()
 export class SpotifyService {
   constructor(
@@ -27,6 +46,7 @@ export class SpotifyService {
     private readonly jwtService: JwtService,
   ) {}
 
+  // Spotify 로그인 URL 생성
   async createLoginUrl(userId: number) {
     const state = await this.jwtService.signAsync(
       {
@@ -42,7 +62,8 @@ export class SpotifyService {
       client_id: process.env.SPOTIFY_CLIENT_ID!,
       response_type: 'code',
       redirect_uri: process.env.SPOTIFY_REDIRECT_URI!,
-      scope: 'user-read-currently-playing user-read-playback-state',
+      scope:
+        'user-read-currently-playing user-read-playback-state',
       state,
     });
 
@@ -51,6 +72,7 @@ export class SpotifyService {
     };
   }
 
+  // Spotify OAuth callback 처리
   async handleCallback(code: string, state: string) {
     if (!code || !state) {
       throw new BadRequestException(
@@ -87,12 +109,14 @@ export class SpotifyService {
         method: 'POST',
         headers: {
           Authorization: `Basic ${credentials}`,
-          'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Type':
+            'application/x-www-form-urlencoded',
         },
         body: new URLSearchParams({
           grant_type: 'authorization_code',
           code,
-          redirect_uri: process.env.SPOTIFY_REDIRECT_URI!,
+          redirect_uri:
+            process.env.SPOTIFY_REDIRECT_URI!,
         }),
       },
     );
@@ -144,7 +168,8 @@ export class SpotifyService {
           spotifyUserId: profile.id,
           accessToken: tokens.access_token,
           refreshToken:
-            tokens.refresh_token ?? existingAccount.refreshToken,
+            tokens.refresh_token ??
+            existingAccount.refreshToken,
           expiresAt,
         },
       });
@@ -171,5 +196,157 @@ export class SpotifyService {
       spotifyUserId: profile.id,
       displayName: profile.display_name,
     };
+  }
+
+  // 현재 재생 중인 곡 조회
+  async getCurrentTrack(userId: number) {
+    const account =
+      await this.prisma.spotifyAccount.findUnique({
+        where: {
+          userId,
+        },
+      });
+
+    if (!account) {
+      throw new UnauthorizedException(
+        'Spotify 계정 연결이 필요합니다.',
+      );
+    }
+
+    const accessToken =
+      await this.getValidAccessToken(userId);
+
+    const response = await fetch(
+      'https://api.spotify.com/v1/me/player/currently-playing',
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+
+    // 아무것도 재생 중이지 않음
+    if (response.status === 204) {
+      return {
+        isPlaying: false,
+        track: null,
+      };
+    }
+
+    if (!response.ok) {
+      throw new BadRequestException(
+        '현재 재생 중인 곡을 가져오지 못했습니다.',
+      );
+    }
+
+    const data =
+      (await response.json()) as SpotifyCurrentlyPlaying;
+
+    if (!data.item) {
+      return {
+        isPlaying: false,
+        track: null,
+      };
+    }
+
+    return {
+      isPlaying: data.is_playing,
+      track: {
+        spotifyTrackId: data.item.id,
+        title: data.item.name,
+        artist: data.item.artists
+          .map((artist) => artist.name)
+          .join(', '),
+        albumImage:
+          data.item.album.images[0]?.url ?? null,
+        spotifyUrl:
+          data.item.external_urls.spotify,
+      },
+    };
+  }
+
+  // access token 유효성 확인
+  private async getValidAccessToken(
+    userId: number,
+  ): Promise<string> {
+    const account =
+      await this.prisma.spotifyAccount.findUnique({
+        where: {
+          userId,
+        },
+      });
+
+    if (!account) {
+      throw new UnauthorizedException(
+        'Spotify 계정 연결이 필요합니다.',
+      );
+    }
+
+    // 만료까지 1분 이상 남았으면 기존 토큰 사용
+    if (
+      account.expiresAt.getTime() >
+      Date.now() + 60_000
+    ) {
+      return account.accessToken;
+    }
+
+    // 만료됐거나 곧 만료될 예정이면 갱신
+    return this.refreshAccessToken(
+      userId,
+      account.refreshToken,
+    );
+  }
+
+  // refresh token으로 access token 갱신
+  private async refreshAccessToken(
+    userId: number,
+    refreshToken: string,
+  ): Promise<string> {
+    const credentials = Buffer.from(
+      `${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`,
+    ).toString('base64');
+
+    const response = await fetch(
+      'https://accounts.spotify.com/api/token',
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Basic ${credentials}`,
+          'Content-Type':
+            'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+          grant_type: 'refresh_token',
+          refresh_token: refreshToken,
+        }),
+      },
+    );
+
+    if (!response.ok) {
+      throw new UnauthorizedException(
+        'Spotify 인증 갱신에 실패했습니다. 다시 연결해주세요.',
+      );
+    }
+
+    const tokens =
+      (await response.json()) as SpotifyTokenResponse;
+
+    const expiresAt = new Date(
+      Date.now() + tokens.expires_in * 1000,
+    );
+
+    await this.prisma.spotifyAccount.update({
+      where: {
+        userId,
+      },
+      data: {
+        accessToken: tokens.access_token,
+        refreshToken:
+          tokens.refresh_token ?? refreshToken,
+        expiresAt,
+      },
+    });
+
+    return tokens.access_token;
   }
 }

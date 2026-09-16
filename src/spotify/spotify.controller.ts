@@ -37,4 +37,14 @@ export class SpotifyController {
       state,
     );
   }
+
+  @UseGuards(AuthGuard)
+  @Get('current-track')
+  getCurrentTrack(
+    @Req() request: AuthenticatedRequest,
+  ) {
+    return this.spotifyService.getCurrentTrack(
+      request.user.sub,
+    );
+  }
 }
