@@ -25,6 +25,8 @@ model User {
   chatRoomsAsUser1 ChatRoom[] @relation("ChatRoomUser1")
   chatRoomsAsUser2 ChatRoom[] @relation("ChatRoomUser2")
 
+  sentSongMessages SongMessage[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -132,10 +134,33 @@ model ChatRoom {
   user1 User @relation("ChatRoomUser1", fields: [user1Id], references: [id], onDelete: Cascade)
   user2 User @relation("ChatRoomUser2", fields: [user2Id], references: [id], onDelete: Cascade)
 
+  messages SongMessage[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@unique([user1Id, user2Id])
   @@index([user1Id])
   @@index([user2Id])
+}
+
+model SongMessage {
+  id Int @id @default(autoincrement())
+
+  chatRoomId Int
+  senderId   Int
+
+  chatRoom ChatRoom @relation(fields: [chatRoomId], references: [id], onDelete: Cascade)
+  sender   User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
+
+  spotifyTrackId String
+  trackTitle     String
+  trackArtist    String
+  albumImage     String? @db.Text
+  spotifyUrl     String? @db.Text
+
+  createdAt DateTime @default(now())
+
+  @@index([chatRoomId])
+  @@index([senderId])
 }

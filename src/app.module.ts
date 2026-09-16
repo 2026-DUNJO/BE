@@ -12,6 +12,7 @@ import { GroqModule } from './groq/groq.module.js';
 import { MatchingModule } from './matching/matching.module.js';
 import { LocationModule } from './location/location.module.js';
 import { InvitationsModule } from './invitations/invitations.module.js';
+import { FriendshipsModule } from './friendships/friendships.module.js';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { InvitationsModule } from './invitations/invitations.module.js';
     MatchingModule,
     LocationModule,
     InvitationsModule,
+    FriendshipsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

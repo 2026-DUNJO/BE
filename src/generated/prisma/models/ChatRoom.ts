@@ -226,6 +226,7 @@ export type ChatRoomWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"ChatRoom"> | Date | string
   user1?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   user2?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  messages?: Prisma.SongMessageListRelationFilter
 }
 
 export type ChatRoomOrderByWithRelationInput = {
@@ -236,6 +237,7 @@ export type ChatRoomOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   user1?: Prisma.UserOrderByWithRelationInput
   user2?: Prisma.UserOrderByWithRelationInput
+  messages?: Prisma.SongMessageOrderByRelationAggregateInput
 }
 
 export type ChatRoomWhereUniqueInput = Prisma.AtLeast<{
@@ -250,6 +252,7 @@ export type ChatRoomWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"ChatRoom"> | Date | string
   user1?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   user2?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  messages?: Prisma.SongMessageListRelationFilter
 }, "id" | "user1Id_user2Id">
 
 export type ChatRoomOrderByWithAggregationInput = {
@@ -281,6 +284,7 @@ export type ChatRoomCreateInput = {
   updatedAt?: Date | string
   user1: Prisma.UserCreateNestedOneWithoutChatRoomsAsUser1Input
   user2: Prisma.UserCreateNestedOneWithoutChatRoomsAsUser2Input
+  messages?: Prisma.SongMessageCreateNestedManyWithoutChatRoomInput
 }
 
 export type ChatRoomUncheckedCreateInput = {
@@ -289,6 +293,7 @@ export type ChatRoomUncheckedCreateInput = {
   user2Id: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  messages?: Prisma.SongMessageUncheckedCreateNestedManyWithoutChatRoomInput
 }
 
 export type ChatRoomUpdateInput = {
@@ -296,6 +301,7 @@ export type ChatRoomUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user1?: Prisma.UserUpdateOneRequiredWithoutChatRoomsAsUser1NestedInput
   user2?: Prisma.UserUpdateOneRequiredWithoutChatRoomsAsUser2NestedInput
+  messages?: Prisma.SongMessageUpdateManyWithoutChatRoomNestedInput
 }
 
 export type ChatRoomUncheckedUpdateInput = {
@@ -304,6 +310,7 @@ export type ChatRoomUncheckedUpdateInput = {
   user2Id?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  messages?: Prisma.SongMessageUncheckedUpdateManyWithoutChatRoomNestedInput
 }
 
 export type ChatRoomCreateManyInput = {
@@ -376,6 +383,11 @@ export type ChatRoomSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   user1Id?: Prisma.SortOrder
   user2Id?: Prisma.SortOrder
+}
+
+export type ChatRoomScalarRelationFilter = {
+  is?: Prisma.ChatRoomWhereInput
+  isNot?: Prisma.ChatRoomWhereInput
 }
 
 export type ChatRoomCreateNestedManyWithoutUser1Input = {
@@ -462,10 +474,25 @@ export type ChatRoomUncheckedUpdateManyWithoutUser2NestedInput = {
   deleteMany?: Prisma.ChatRoomScalarWhereInput | Prisma.ChatRoomScalarWhereInput[]
 }
 
+export type ChatRoomCreateNestedOneWithoutMessagesInput = {
+  create?: Prisma.XOR<Prisma.ChatRoomCreateWithoutMessagesInput, Prisma.ChatRoomUncheckedCreateWithoutMessagesInput>
+  connectOrCreate?: Prisma.ChatRoomCreateOrConnectWithoutMessagesInput
+  connect?: Prisma.ChatRoomWhereUniqueInput
+}
+
+export type ChatRoomUpdateOneRequiredWithoutMessagesNestedInput = {
+  create?: Prisma.XOR<Prisma.ChatRoomCreateWithoutMessagesInput, Prisma.ChatRoomUncheckedCreateWithoutMessagesInput>
+  connectOrCreate?: Prisma.ChatRoomCreateOrConnectWithoutMessagesInput
+  upsert?: Prisma.ChatRoomUpsertWithoutMessagesInput
+  connect?: Prisma.ChatRoomWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ChatRoomUpdateToOneWithWhereWithoutMessagesInput, Prisma.ChatRoomUpdateWithoutMessagesInput>, Prisma.ChatRoomUncheckedUpdateWithoutMessagesInput>
+}
+
 export type ChatRoomCreateWithoutUser1Input = {
   createdAt?: Date | string
   updatedAt?: Date | string
   user2: Prisma.UserCreateNestedOneWithoutChatRoomsAsUser2Input
+  messages?: Prisma.SongMessageCreateNestedManyWithoutChatRoomInput
 }
 
 export type ChatRoomUncheckedCreateWithoutUser1Input = {
@@ -473,6 +500,7 @@ export type ChatRoomUncheckedCreateWithoutUser1Input = {
   user2Id: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  messages?: Prisma.SongMessageUncheckedCreateNestedManyWithoutChatRoomInput
 }
 
 export type ChatRoomCreateOrConnectWithoutUser1Input = {
@@ -489,6 +517,7 @@ export type ChatRoomCreateWithoutUser2Input = {
   createdAt?: Date | string
   updatedAt?: Date | string
   user1: Prisma.UserCreateNestedOneWithoutChatRoomsAsUser1Input
+  messages?: Prisma.SongMessageCreateNestedManyWithoutChatRoomInput
 }
 
 export type ChatRoomUncheckedCreateWithoutUser2Input = {
@@ -496,6 +525,7 @@ export type ChatRoomUncheckedCreateWithoutUser2Input = {
   user1Id: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  messages?: Prisma.SongMessageUncheckedCreateNestedManyWithoutChatRoomInput
 }
 
 export type ChatRoomCreateOrConnectWithoutUser2Input = {
@@ -551,6 +581,52 @@ export type ChatRoomUpdateManyWithWhereWithoutUser2Input = {
   data: Prisma.XOR<Prisma.ChatRoomUpdateManyMutationInput, Prisma.ChatRoomUncheckedUpdateManyWithoutUser2Input>
 }
 
+export type ChatRoomCreateWithoutMessagesInput = {
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user1: Prisma.UserCreateNestedOneWithoutChatRoomsAsUser1Input
+  user2: Prisma.UserCreateNestedOneWithoutChatRoomsAsUser2Input
+}
+
+export type ChatRoomUncheckedCreateWithoutMessagesInput = {
+  id?: number
+  user1Id: number
+  user2Id: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ChatRoomCreateOrConnectWithoutMessagesInput = {
+  where: Prisma.ChatRoomWhereUniqueInput
+  create: Prisma.XOR<Prisma.ChatRoomCreateWithoutMessagesInput, Prisma.ChatRoomUncheckedCreateWithoutMessagesInput>
+}
+
+export type ChatRoomUpsertWithoutMessagesInput = {
+  update: Prisma.XOR<Prisma.ChatRoomUpdateWithoutMessagesInput, Prisma.ChatRoomUncheckedUpdateWithoutMessagesInput>
+  create: Prisma.XOR<Prisma.ChatRoomCreateWithoutMessagesInput, Prisma.ChatRoomUncheckedCreateWithoutMessagesInput>
+  where?: Prisma.ChatRoomWhereInput
+}
+
+export type ChatRoomUpdateToOneWithWhereWithoutMessagesInput = {
+  where?: Prisma.ChatRoomWhereInput
+  data: Prisma.XOR<Prisma.ChatRoomUpdateWithoutMessagesInput, Prisma.ChatRoomUncheckedUpdateWithoutMessagesInput>
+}
+
+export type ChatRoomUpdateWithoutMessagesInput = {
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user1?: Prisma.UserUpdateOneRequiredWithoutChatRoomsAsUser1NestedInput
+  user2?: Prisma.UserUpdateOneRequiredWithoutChatRoomsAsUser2NestedInput
+}
+
+export type ChatRoomUncheckedUpdateWithoutMessagesInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  user1Id?: Prisma.IntFieldUpdateOperationsInput | number
+  user2Id?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 export type ChatRoomCreateManyUser1Input = {
   id?: number
   user2Id: number
@@ -569,6 +645,7 @@ export type ChatRoomUpdateWithoutUser1Input = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user2?: Prisma.UserUpdateOneRequiredWithoutChatRoomsAsUser2NestedInput
+  messages?: Prisma.SongMessageUpdateManyWithoutChatRoomNestedInput
 }
 
 export type ChatRoomUncheckedUpdateWithoutUser1Input = {
@@ -576,6 +653,7 @@ export type ChatRoomUncheckedUpdateWithoutUser1Input = {
   user2Id?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  messages?: Prisma.SongMessageUncheckedUpdateManyWithoutChatRoomNestedInput
 }
 
 export type ChatRoomUncheckedUpdateManyWithoutUser1Input = {
@@ -589,6 +667,7 @@ export type ChatRoomUpdateWithoutUser2Input = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user1?: Prisma.UserUpdateOneRequiredWithoutChatRoomsAsUser1NestedInput
+  messages?: Prisma.SongMessageUpdateManyWithoutChatRoomNestedInput
 }
 
 export type ChatRoomUncheckedUpdateWithoutUser2Input = {
@@ -596,6 +675,7 @@ export type ChatRoomUncheckedUpdateWithoutUser2Input = {
   user1Id?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  messages?: Prisma.SongMessageUncheckedUpdateManyWithoutChatRoomNestedInput
 }
 
 export type ChatRoomUncheckedUpdateManyWithoutUser2Input = {
@@ -606,6 +686,35 @@ export type ChatRoomUncheckedUpdateManyWithoutUser2Input = {
 }
 
 
+/**
+ * Count Type ChatRoomCountOutputType
+ */
+
+export type ChatRoomCountOutputType = {
+  messages: number
+}
+
+export type ChatRoomCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  messages?: boolean | ChatRoomCountOutputTypeCountMessagesArgs
+}
+
+/**
+ * ChatRoomCountOutputType without action
+ */
+export type ChatRoomCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ChatRoomCountOutputType
+   */
+  select?: Prisma.ChatRoomCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * ChatRoomCountOutputType without action
+ */
+export type ChatRoomCountOutputTypeCountMessagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SongMessageWhereInput
+}
+
 
 export type ChatRoomSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -615,6 +724,8 @@ export type ChatRoomSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   updatedAt?: boolean
   user1?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   user2?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  messages?: boolean | Prisma.ChatRoom$messagesArgs<ExtArgs>
+  _count?: boolean | Prisma.ChatRoomCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["chatRoom"]>
 
 
@@ -631,6 +742,8 @@ export type ChatRoomOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs =
 export type ChatRoomInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user1?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   user2?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  messages?: boolean | Prisma.ChatRoom$messagesArgs<ExtArgs>
+  _count?: boolean | Prisma.ChatRoomCountOutputTypeDefaultArgs<ExtArgs>
 }
 
 export type $ChatRoomPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -638,6 +751,7 @@ export type $ChatRoomPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
   objects: {
     user1: Prisma.$UserPayload<ExtArgs>
     user2: Prisma.$UserPayload<ExtArgs>
+    messages: Prisma.$SongMessagePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -987,6 +1101,7 @@ export interface Prisma__ChatRoomClient<T, Null = never, ExtArgs extends runtime
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user1<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   user2<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  messages<T extends Prisma.ChatRoom$messagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ChatRoom$messagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SongMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1366,6 +1481,30 @@ export type ChatRoomDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Limit how many ChatRooms to delete.
    */
   limit?: number
+}
+
+/**
+ * ChatRoom.messages
+ */
+export type ChatRoom$messagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SongMessage
+   */
+  select?: Prisma.SongMessageSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SongMessage
+   */
+  omit?: Prisma.SongMessageOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SongMessageInclude<ExtArgs> | null
+  where?: Prisma.SongMessageWhereInput
+  orderBy?: Prisma.SongMessageOrderByWithRelationInput | Prisma.SongMessageOrderByWithRelationInput[]
+  cursor?: Prisma.SongMessageWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SongMessageScalarFieldEnum | Prisma.SongMessageScalarFieldEnum[]
 }
 
 /**

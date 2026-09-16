@@ -403,7 +403,8 @@ export const ModelName = {
   UserLocation: 'UserLocation',
   Invitation: 'Invitation',
   Friendship: 'Friendship',
-  ChatRoom: 'ChatRoom'
+  ChatRoom: 'ChatRoom',
+  SongMessage: 'SongMessage'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -419,7 +420,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "spotifyAccount" | "trackAnalysis" | "userLocation" | "invitation" | "friendship" | "chatRoom"
+    modelProps: "user" | "spotifyAccount" | "trackAnalysis" | "userLocation" | "invitation" | "friendship" | "chatRoom" | "songMessage"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -885,6 +886,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    SongMessage: {
+      payload: Prisma.$SongMessagePayload<ExtArgs>
+      fields: Prisma.SongMessageFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SongMessageFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SongMessagePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SongMessageFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SongMessagePayload>
+        }
+        findFirst: {
+          args: Prisma.SongMessageFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SongMessagePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SongMessageFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SongMessagePayload>
+        }
+        findMany: {
+          args: Prisma.SongMessageFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SongMessagePayload>[]
+        }
+        create: {
+          args: Prisma.SongMessageCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SongMessagePayload>
+        }
+        createMany: {
+          args: Prisma.SongMessageCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.SongMessageDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SongMessagePayload>
+        }
+        update: {
+          args: Prisma.SongMessageUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SongMessagePayload>
+        }
+        deleteMany: {
+          args: Prisma.SongMessageDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SongMessageUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.SongMessageUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SongMessagePayload>
+        }
+        aggregate: {
+          args: Prisma.SongMessageAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSongMessage>
+        }
+        groupBy: {
+          args: Prisma.SongMessageGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SongMessageGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SongMessageCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SongMessageCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1018,6 +1085,21 @@ export const ChatRoomScalarFieldEnum = {
 export type ChatRoomScalarFieldEnum = (typeof ChatRoomScalarFieldEnum)[keyof typeof ChatRoomScalarFieldEnum]
 
 
+export const SongMessageScalarFieldEnum = {
+  id: 'id',
+  chatRoomId: 'chatRoomId',
+  senderId: 'senderId',
+  spotifyTrackId: 'spotifyTrackId',
+  trackTitle: 'trackTitle',
+  trackArtist: 'trackArtist',
+  albumImage: 'albumImage',
+  spotifyUrl: 'spotifyUrl',
+  createdAt: 'createdAt'
+} as const
+
+export type SongMessageScalarFieldEnum = (typeof SongMessageScalarFieldEnum)[keyof typeof SongMessageScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1095,6 +1177,17 @@ export const InvitationOrderByRelevanceFieldEnum = {
 } as const
 
 export type InvitationOrderByRelevanceFieldEnum = (typeof InvitationOrderByRelevanceFieldEnum)[keyof typeof InvitationOrderByRelevanceFieldEnum]
+
+
+export const SongMessageOrderByRelevanceFieldEnum = {
+  spotifyTrackId: 'spotifyTrackId',
+  trackTitle: 'trackTitle',
+  trackArtist: 'trackArtist',
+  albumImage: 'albumImage',
+  spotifyUrl: 'spotifyUrl'
+} as const
+
+export type SongMessageOrderByRelevanceFieldEnum = (typeof SongMessageOrderByRelevanceFieldEnum)[keyof typeof SongMessageOrderByRelevanceFieldEnum]
 
 
 
@@ -1309,6 +1402,7 @@ export type GlobalOmitConfig = {
   invitation?: Prisma.InvitationOmit
   friendship?: Prisma.FriendshipOmit
   chatRoom?: Prisma.ChatRoomOmit
+  songMessage?: Prisma.SongMessageOmit
 }
 
 /* Types for Logging */

@@ -57,7 +57,8 @@ export const ModelName = {
   UserLocation: 'UserLocation',
   Invitation: 'Invitation',
   Friendship: 'Friendship',
-  ChatRoom: 'ChatRoom'
+  ChatRoom: 'ChatRoom',
+  SongMessage: 'SongMessage'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -170,6 +171,21 @@ export const ChatRoomScalarFieldEnum = {
 export type ChatRoomScalarFieldEnum = (typeof ChatRoomScalarFieldEnum)[keyof typeof ChatRoomScalarFieldEnum]
 
 
+export const SongMessageScalarFieldEnum = {
+  id: 'id',
+  chatRoomId: 'chatRoomId',
+  senderId: 'senderId',
+  spotifyTrackId: 'spotifyTrackId',
+  trackTitle: 'trackTitle',
+  trackArtist: 'trackArtist',
+  albumImage: 'albumImage',
+  spotifyUrl: 'spotifyUrl',
+  createdAt: 'createdAt'
+} as const
+
+export type SongMessageScalarFieldEnum = (typeof SongMessageScalarFieldEnum)[keyof typeof SongMessageScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -247,4 +263,15 @@ export const InvitationOrderByRelevanceFieldEnum = {
 } as const
 
 export type InvitationOrderByRelevanceFieldEnum = (typeof InvitationOrderByRelevanceFieldEnum)[keyof typeof InvitationOrderByRelevanceFieldEnum]
+
+
+export const SongMessageOrderByRelevanceFieldEnum = {
+  spotifyTrackId: 'spotifyTrackId',
+  trackTitle: 'trackTitle',
+  trackArtist: 'trackArtist',
+  albumImage: 'albumImage',
+  spotifyUrl: 'spotifyUrl'
+} as const
+
+export type SongMessageOrderByRelevanceFieldEnum = (typeof SongMessageOrderByRelevanceFieldEnum)[keyof typeof SongMessageOrderByRelevanceFieldEnum]
 

@@ -52,3 +52,8 @@ export type Friendship = Prisma.FriendshipModel
  * 
  */
 export type ChatRoom = Prisma.ChatRoomModel
+/**
+ * Model SongMessage
+ * 
+ */
+export type SongMessage = Prisma.SongMessageModel

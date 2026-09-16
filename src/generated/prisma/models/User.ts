@@ -232,6 +232,7 @@ export type UserWhereInput = {
   friendshipsAsUser2?: Prisma.FriendshipListRelationFilter
   chatRoomsAsUser1?: Prisma.ChatRoomListRelationFilter
   chatRoomsAsUser2?: Prisma.ChatRoomListRelationFilter
+  sentSongMessages?: Prisma.SongMessageListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -249,6 +250,7 @@ export type UserOrderByWithRelationInput = {
   friendshipsAsUser2?: Prisma.FriendshipOrderByRelationAggregateInput
   chatRoomsAsUser1?: Prisma.ChatRoomOrderByRelationAggregateInput
   chatRoomsAsUser2?: Prisma.ChatRoomOrderByRelationAggregateInput
+  sentSongMessages?: Prisma.SongMessageOrderByRelationAggregateInput
   _relevance?: Prisma.UserOrderByRelevanceInput
 }
 
@@ -270,6 +272,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   friendshipsAsUser2?: Prisma.FriendshipListRelationFilter
   chatRoomsAsUser1?: Prisma.ChatRoomListRelationFilter
   chatRoomsAsUser2?: Prisma.ChatRoomListRelationFilter
+  sentSongMessages?: Prisma.SongMessageListRelationFilter
 }, "id" | "userId">
 
 export type UserOrderByWithAggregationInput = {
@@ -312,6 +315,7 @@ export type UserCreateInput = {
   friendshipsAsUser2?: Prisma.FriendshipCreateNestedManyWithoutUser2Input
   chatRoomsAsUser1?: Prisma.ChatRoomCreateNestedManyWithoutUser1Input
   chatRoomsAsUser2?: Prisma.ChatRoomCreateNestedManyWithoutUser2Input
+  sentSongMessages?: Prisma.SongMessageCreateNestedManyWithoutSenderInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -329,6 +333,7 @@ export type UserUncheckedCreateInput = {
   friendshipsAsUser2?: Prisma.FriendshipUncheckedCreateNestedManyWithoutUser2Input
   chatRoomsAsUser1?: Prisma.ChatRoomUncheckedCreateNestedManyWithoutUser1Input
   chatRoomsAsUser2?: Prisma.ChatRoomUncheckedCreateNestedManyWithoutUser2Input
+  sentSongMessages?: Prisma.SongMessageUncheckedCreateNestedManyWithoutSenderInput
 }
 
 export type UserUpdateInput = {
@@ -345,6 +350,7 @@ export type UserUpdateInput = {
   friendshipsAsUser2?: Prisma.FriendshipUpdateManyWithoutUser2NestedInput
   chatRoomsAsUser1?: Prisma.ChatRoomUpdateManyWithoutUser1NestedInput
   chatRoomsAsUser2?: Prisma.ChatRoomUpdateManyWithoutUser2NestedInput
+  sentSongMessages?: Prisma.SongMessageUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -362,6 +368,7 @@ export type UserUncheckedUpdateInput = {
   friendshipsAsUser2?: Prisma.FriendshipUncheckedUpdateManyWithoutUser2NestedInput
   chatRoomsAsUser1?: Prisma.ChatRoomUncheckedUpdateManyWithoutUser1NestedInput
   chatRoomsAsUser2?: Prisma.ChatRoomUncheckedUpdateManyWithoutUser2NestedInput
+  sentSongMessages?: Prisma.SongMessageUncheckedUpdateManyWithoutSenderNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -564,6 +571,20 @@ export type UserUpdateOneRequiredWithoutChatRoomsAsUser2NestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutChatRoomsAsUser2Input, Prisma.UserUpdateWithoutChatRoomsAsUser2Input>, Prisma.UserUncheckedUpdateWithoutChatRoomsAsUser2Input>
 }
 
+export type UserCreateNestedOneWithoutSentSongMessagesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSentSongMessagesInput, Prisma.UserUncheckedCreateWithoutSentSongMessagesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSentSongMessagesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutSentSongMessagesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSentSongMessagesInput, Prisma.UserUncheckedCreateWithoutSentSongMessagesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSentSongMessagesInput
+  upsert?: Prisma.UserUpsertWithoutSentSongMessagesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSentSongMessagesInput, Prisma.UserUpdateWithoutSentSongMessagesInput>, Prisma.UserUncheckedUpdateWithoutSentSongMessagesInput>
+}
+
 export type UserCreateWithoutSpotifyAccountInput = {
   userId: string
   passwordHash: string
@@ -577,6 +598,7 @@ export type UserCreateWithoutSpotifyAccountInput = {
   friendshipsAsUser2?: Prisma.FriendshipCreateNestedManyWithoutUser2Input
   chatRoomsAsUser1?: Prisma.ChatRoomCreateNestedManyWithoutUser1Input
   chatRoomsAsUser2?: Prisma.ChatRoomCreateNestedManyWithoutUser2Input
+  sentSongMessages?: Prisma.SongMessageCreateNestedManyWithoutSenderInput
 }
 
 export type UserUncheckedCreateWithoutSpotifyAccountInput = {
@@ -593,6 +615,7 @@ export type UserUncheckedCreateWithoutSpotifyAccountInput = {
   friendshipsAsUser2?: Prisma.FriendshipUncheckedCreateNestedManyWithoutUser2Input
   chatRoomsAsUser1?: Prisma.ChatRoomUncheckedCreateNestedManyWithoutUser1Input
   chatRoomsAsUser2?: Prisma.ChatRoomUncheckedCreateNestedManyWithoutUser2Input
+  sentSongMessages?: Prisma.SongMessageUncheckedCreateNestedManyWithoutSenderInput
 }
 
 export type UserCreateOrConnectWithoutSpotifyAccountInput = {
@@ -624,6 +647,7 @@ export type UserUpdateWithoutSpotifyAccountInput = {
   friendshipsAsUser2?: Prisma.FriendshipUpdateManyWithoutUser2NestedInput
   chatRoomsAsUser1?: Prisma.ChatRoomUpdateManyWithoutUser1NestedInput
   chatRoomsAsUser2?: Prisma.ChatRoomUpdateManyWithoutUser2NestedInput
+  sentSongMessages?: Prisma.SongMessageUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSpotifyAccountInput = {
@@ -640,6 +664,7 @@ export type UserUncheckedUpdateWithoutSpotifyAccountInput = {
   friendshipsAsUser2?: Prisma.FriendshipUncheckedUpdateManyWithoutUser2NestedInput
   chatRoomsAsUser1?: Prisma.ChatRoomUncheckedUpdateManyWithoutUser1NestedInput
   chatRoomsAsUser2?: Prisma.ChatRoomUncheckedUpdateManyWithoutUser2NestedInput
+  sentSongMessages?: Prisma.SongMessageUncheckedUpdateManyWithoutSenderNestedInput
 }
 
 export type UserCreateWithoutLocationInput = {
@@ -655,6 +680,7 @@ export type UserCreateWithoutLocationInput = {
   friendshipsAsUser2?: Prisma.FriendshipCreateNestedManyWithoutUser2Input
   chatRoomsAsUser1?: Prisma.ChatRoomCreateNestedManyWithoutUser1Input
   chatRoomsAsUser2?: Prisma.ChatRoomCreateNestedManyWithoutUser2Input
+  sentSongMessages?: Prisma.SongMessageCreateNestedManyWithoutSenderInput
 }
 
 export type UserUncheckedCreateWithoutLocationInput = {
@@ -671,6 +697,7 @@ export type UserUncheckedCreateWithoutLocationInput = {
   friendshipsAsUser2?: Prisma.FriendshipUncheckedCreateNestedManyWithoutUser2Input
   chatRoomsAsUser1?: Prisma.ChatRoomUncheckedCreateNestedManyWithoutUser1Input
   chatRoomsAsUser2?: Prisma.ChatRoomUncheckedCreateNestedManyWithoutUser2Input
+  sentSongMessages?: Prisma.SongMessageUncheckedCreateNestedManyWithoutSenderInput
 }
 
 export type UserCreateOrConnectWithoutLocationInput = {
@@ -702,6 +729,7 @@ export type UserUpdateWithoutLocationInput = {
   friendshipsAsUser2?: Prisma.FriendshipUpdateManyWithoutUser2NestedInput
   chatRoomsAsUser1?: Prisma.ChatRoomUpdateManyWithoutUser1NestedInput
   chatRoomsAsUser2?: Prisma.ChatRoomUpdateManyWithoutUser2NestedInput
+  sentSongMessages?: Prisma.SongMessageUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLocationInput = {
@@ -718,6 +746,7 @@ export type UserUncheckedUpdateWithoutLocationInput = {
   friendshipsAsUser2?: Prisma.FriendshipUncheckedUpdateManyWithoutUser2NestedInput
   chatRoomsAsUser1?: Prisma.ChatRoomUncheckedUpdateManyWithoutUser1NestedInput
   chatRoomsAsUser2?: Prisma.ChatRoomUncheckedUpdateManyWithoutUser2NestedInput
+  sentSongMessages?: Prisma.SongMessageUncheckedUpdateManyWithoutSenderNestedInput
 }
 
 export type UserCreateWithoutSentInvitationsInput = {
@@ -733,6 +762,7 @@ export type UserCreateWithoutSentInvitationsInput = {
   friendshipsAsUser2?: Prisma.FriendshipCreateNestedManyWithoutUser2Input
   chatRoomsAsUser1?: Prisma.ChatRoomCreateNestedManyWithoutUser1Input
   chatRoomsAsUser2?: Prisma.ChatRoomCreateNestedManyWithoutUser2Input
+  sentSongMessages?: Prisma.SongMessageCreateNestedManyWithoutSenderInput
 }
 
 export type UserUncheckedCreateWithoutSentInvitationsInput = {
@@ -749,6 +779,7 @@ export type UserUncheckedCreateWithoutSentInvitationsInput = {
   friendshipsAsUser2?: Prisma.FriendshipUncheckedCreateNestedManyWithoutUser2Input
   chatRoomsAsUser1?: Prisma.ChatRoomUncheckedCreateNestedManyWithoutUser1Input
   chatRoomsAsUser2?: Prisma.ChatRoomUncheckedCreateNestedManyWithoutUser2Input
+  sentSongMessages?: Prisma.SongMessageUncheckedCreateNestedManyWithoutSenderInput
 }
 
 export type UserCreateOrConnectWithoutSentInvitationsInput = {
@@ -769,6 +800,7 @@ export type UserCreateWithoutReceivedInvitationsInput = {
   friendshipsAsUser2?: Prisma.FriendshipCreateNestedManyWithoutUser2Input
   chatRoomsAsUser1?: Prisma.ChatRoomCreateNestedManyWithoutUser1Input
   chatRoomsAsUser2?: Prisma.ChatRoomCreateNestedManyWithoutUser2Input
+  sentSongMessages?: Prisma.SongMessageCreateNestedManyWithoutSenderInput
 }
 
 export type UserUncheckedCreateWithoutReceivedInvitationsInput = {
@@ -785,6 +817,7 @@ export type UserUncheckedCreateWithoutReceivedInvitationsInput = {
   friendshipsAsUser2?: Prisma.FriendshipUncheckedCreateNestedManyWithoutUser2Input
   chatRoomsAsUser1?: Prisma.ChatRoomUncheckedCreateNestedManyWithoutUser1Input
   chatRoomsAsUser2?: Prisma.ChatRoomUncheckedCreateNestedManyWithoutUser2Input
+  sentSongMessages?: Prisma.SongMessageUncheckedCreateNestedManyWithoutSenderInput
 }
 
 export type UserCreateOrConnectWithoutReceivedInvitationsInput = {
@@ -816,6 +849,7 @@ export type UserUpdateWithoutSentInvitationsInput = {
   friendshipsAsUser2?: Prisma.FriendshipUpdateManyWithoutUser2NestedInput
   chatRoomsAsUser1?: Prisma.ChatRoomUpdateManyWithoutUser1NestedInput
   chatRoomsAsUser2?: Prisma.ChatRoomUpdateManyWithoutUser2NestedInput
+  sentSongMessages?: Prisma.SongMessageUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSentInvitationsInput = {
@@ -832,6 +866,7 @@ export type UserUncheckedUpdateWithoutSentInvitationsInput = {
   friendshipsAsUser2?: Prisma.FriendshipUncheckedUpdateManyWithoutUser2NestedInput
   chatRoomsAsUser1?: Prisma.ChatRoomUncheckedUpdateManyWithoutUser1NestedInput
   chatRoomsAsUser2?: Prisma.ChatRoomUncheckedUpdateManyWithoutUser2NestedInput
+  sentSongMessages?: Prisma.SongMessageUncheckedUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUpsertWithoutReceivedInvitationsInput = {
@@ -858,6 +893,7 @@ export type UserUpdateWithoutReceivedInvitationsInput = {
   friendshipsAsUser2?: Prisma.FriendshipUpdateManyWithoutUser2NestedInput
   chatRoomsAsUser1?: Prisma.ChatRoomUpdateManyWithoutUser1NestedInput
   chatRoomsAsUser2?: Prisma.ChatRoomUpdateManyWithoutUser2NestedInput
+  sentSongMessages?: Prisma.SongMessageUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReceivedInvitationsInput = {
@@ -874,6 +910,7 @@ export type UserUncheckedUpdateWithoutReceivedInvitationsInput = {
   friendshipsAsUser2?: Prisma.FriendshipUncheckedUpdateManyWithoutUser2NestedInput
   chatRoomsAsUser1?: Prisma.ChatRoomUncheckedUpdateManyWithoutUser1NestedInput
   chatRoomsAsUser2?: Prisma.ChatRoomUncheckedUpdateManyWithoutUser2NestedInput
+  sentSongMessages?: Prisma.SongMessageUncheckedUpdateManyWithoutSenderNestedInput
 }
 
 export type UserCreateWithoutFriendshipsAsUser1Input = {
@@ -889,6 +926,7 @@ export type UserCreateWithoutFriendshipsAsUser1Input = {
   friendshipsAsUser2?: Prisma.FriendshipCreateNestedManyWithoutUser2Input
   chatRoomsAsUser1?: Prisma.ChatRoomCreateNestedManyWithoutUser1Input
   chatRoomsAsUser2?: Prisma.ChatRoomCreateNestedManyWithoutUser2Input
+  sentSongMessages?: Prisma.SongMessageCreateNestedManyWithoutSenderInput
 }
 
 export type UserUncheckedCreateWithoutFriendshipsAsUser1Input = {
@@ -905,6 +943,7 @@ export type UserUncheckedCreateWithoutFriendshipsAsUser1Input = {
   friendshipsAsUser2?: Prisma.FriendshipUncheckedCreateNestedManyWithoutUser2Input
   chatRoomsAsUser1?: Prisma.ChatRoomUncheckedCreateNestedManyWithoutUser1Input
   chatRoomsAsUser2?: Prisma.ChatRoomUncheckedCreateNestedManyWithoutUser2Input
+  sentSongMessages?: Prisma.SongMessageUncheckedCreateNestedManyWithoutSenderInput
 }
 
 export type UserCreateOrConnectWithoutFriendshipsAsUser1Input = {
@@ -925,6 +964,7 @@ export type UserCreateWithoutFriendshipsAsUser2Input = {
   friendshipsAsUser1?: Prisma.FriendshipCreateNestedManyWithoutUser1Input
   chatRoomsAsUser1?: Prisma.ChatRoomCreateNestedManyWithoutUser1Input
   chatRoomsAsUser2?: Prisma.ChatRoomCreateNestedManyWithoutUser2Input
+  sentSongMessages?: Prisma.SongMessageCreateNestedManyWithoutSenderInput
 }
 
 export type UserUncheckedCreateWithoutFriendshipsAsUser2Input = {
@@ -941,6 +981,7 @@ export type UserUncheckedCreateWithoutFriendshipsAsUser2Input = {
   friendshipsAsUser1?: Prisma.FriendshipUncheckedCreateNestedManyWithoutUser1Input
   chatRoomsAsUser1?: Prisma.ChatRoomUncheckedCreateNestedManyWithoutUser1Input
   chatRoomsAsUser2?: Prisma.ChatRoomUncheckedCreateNestedManyWithoutUser2Input
+  sentSongMessages?: Prisma.SongMessageUncheckedCreateNestedManyWithoutSenderInput
 }
 
 export type UserCreateOrConnectWithoutFriendshipsAsUser2Input = {
@@ -972,6 +1013,7 @@ export type UserUpdateWithoutFriendshipsAsUser1Input = {
   friendshipsAsUser2?: Prisma.FriendshipUpdateManyWithoutUser2NestedInput
   chatRoomsAsUser1?: Prisma.ChatRoomUpdateManyWithoutUser1NestedInput
   chatRoomsAsUser2?: Prisma.ChatRoomUpdateManyWithoutUser2NestedInput
+  sentSongMessages?: Prisma.SongMessageUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFriendshipsAsUser1Input = {
@@ -988,6 +1030,7 @@ export type UserUncheckedUpdateWithoutFriendshipsAsUser1Input = {
   friendshipsAsUser2?: Prisma.FriendshipUncheckedUpdateManyWithoutUser2NestedInput
   chatRoomsAsUser1?: Prisma.ChatRoomUncheckedUpdateManyWithoutUser1NestedInput
   chatRoomsAsUser2?: Prisma.ChatRoomUncheckedUpdateManyWithoutUser2NestedInput
+  sentSongMessages?: Prisma.SongMessageUncheckedUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUpsertWithoutFriendshipsAsUser2Input = {
@@ -1014,6 +1057,7 @@ export type UserUpdateWithoutFriendshipsAsUser2Input = {
   friendshipsAsUser1?: Prisma.FriendshipUpdateManyWithoutUser1NestedInput
   chatRoomsAsUser1?: Prisma.ChatRoomUpdateManyWithoutUser1NestedInput
   chatRoomsAsUser2?: Prisma.ChatRoomUpdateManyWithoutUser2NestedInput
+  sentSongMessages?: Prisma.SongMessageUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFriendshipsAsUser2Input = {
@@ -1030,6 +1074,7 @@ export type UserUncheckedUpdateWithoutFriendshipsAsUser2Input = {
   friendshipsAsUser1?: Prisma.FriendshipUncheckedUpdateManyWithoutUser1NestedInput
   chatRoomsAsUser1?: Prisma.ChatRoomUncheckedUpdateManyWithoutUser1NestedInput
   chatRoomsAsUser2?: Prisma.ChatRoomUncheckedUpdateManyWithoutUser2NestedInput
+  sentSongMessages?: Prisma.SongMessageUncheckedUpdateManyWithoutSenderNestedInput
 }
 
 export type UserCreateWithoutChatRoomsAsUser1Input = {
@@ -1045,6 +1090,7 @@ export type UserCreateWithoutChatRoomsAsUser1Input = {
   friendshipsAsUser1?: Prisma.FriendshipCreateNestedManyWithoutUser1Input
   friendshipsAsUser2?: Prisma.FriendshipCreateNestedManyWithoutUser2Input
   chatRoomsAsUser2?: Prisma.ChatRoomCreateNestedManyWithoutUser2Input
+  sentSongMessages?: Prisma.SongMessageCreateNestedManyWithoutSenderInput
 }
 
 export type UserUncheckedCreateWithoutChatRoomsAsUser1Input = {
@@ -1061,6 +1107,7 @@ export type UserUncheckedCreateWithoutChatRoomsAsUser1Input = {
   friendshipsAsUser1?: Prisma.FriendshipUncheckedCreateNestedManyWithoutUser1Input
   friendshipsAsUser2?: Prisma.FriendshipUncheckedCreateNestedManyWithoutUser2Input
   chatRoomsAsUser2?: Prisma.ChatRoomUncheckedCreateNestedManyWithoutUser2Input
+  sentSongMessages?: Prisma.SongMessageUncheckedCreateNestedManyWithoutSenderInput
 }
 
 export type UserCreateOrConnectWithoutChatRoomsAsUser1Input = {
@@ -1081,6 +1128,7 @@ export type UserCreateWithoutChatRoomsAsUser2Input = {
   friendshipsAsUser1?: Prisma.FriendshipCreateNestedManyWithoutUser1Input
   friendshipsAsUser2?: Prisma.FriendshipCreateNestedManyWithoutUser2Input
   chatRoomsAsUser1?: Prisma.ChatRoomCreateNestedManyWithoutUser1Input
+  sentSongMessages?: Prisma.SongMessageCreateNestedManyWithoutSenderInput
 }
 
 export type UserUncheckedCreateWithoutChatRoomsAsUser2Input = {
@@ -1097,6 +1145,7 @@ export type UserUncheckedCreateWithoutChatRoomsAsUser2Input = {
   friendshipsAsUser1?: Prisma.FriendshipUncheckedCreateNestedManyWithoutUser1Input
   friendshipsAsUser2?: Prisma.FriendshipUncheckedCreateNestedManyWithoutUser2Input
   chatRoomsAsUser1?: Prisma.ChatRoomUncheckedCreateNestedManyWithoutUser1Input
+  sentSongMessages?: Prisma.SongMessageUncheckedCreateNestedManyWithoutSenderInput
 }
 
 export type UserCreateOrConnectWithoutChatRoomsAsUser2Input = {
@@ -1128,6 +1177,7 @@ export type UserUpdateWithoutChatRoomsAsUser1Input = {
   friendshipsAsUser1?: Prisma.FriendshipUpdateManyWithoutUser1NestedInput
   friendshipsAsUser2?: Prisma.FriendshipUpdateManyWithoutUser2NestedInput
   chatRoomsAsUser2?: Prisma.ChatRoomUpdateManyWithoutUser2NestedInput
+  sentSongMessages?: Prisma.SongMessageUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutChatRoomsAsUser1Input = {
@@ -1144,6 +1194,7 @@ export type UserUncheckedUpdateWithoutChatRoomsAsUser1Input = {
   friendshipsAsUser1?: Prisma.FriendshipUncheckedUpdateManyWithoutUser1NestedInput
   friendshipsAsUser2?: Prisma.FriendshipUncheckedUpdateManyWithoutUser2NestedInput
   chatRoomsAsUser2?: Prisma.ChatRoomUncheckedUpdateManyWithoutUser2NestedInput
+  sentSongMessages?: Prisma.SongMessageUncheckedUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUpsertWithoutChatRoomsAsUser2Input = {
@@ -1170,6 +1221,7 @@ export type UserUpdateWithoutChatRoomsAsUser2Input = {
   friendshipsAsUser1?: Prisma.FriendshipUpdateManyWithoutUser1NestedInput
   friendshipsAsUser2?: Prisma.FriendshipUpdateManyWithoutUser2NestedInput
   chatRoomsAsUser1?: Prisma.ChatRoomUpdateManyWithoutUser1NestedInput
+  sentSongMessages?: Prisma.SongMessageUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutChatRoomsAsUser2Input = {
@@ -1186,6 +1238,89 @@ export type UserUncheckedUpdateWithoutChatRoomsAsUser2Input = {
   friendshipsAsUser1?: Prisma.FriendshipUncheckedUpdateManyWithoutUser1NestedInput
   friendshipsAsUser2?: Prisma.FriendshipUncheckedUpdateManyWithoutUser2NestedInput
   chatRoomsAsUser1?: Prisma.ChatRoomUncheckedUpdateManyWithoutUser1NestedInput
+  sentSongMessages?: Prisma.SongMessageUncheckedUpdateManyWithoutSenderNestedInput
+}
+
+export type UserCreateWithoutSentSongMessagesInput = {
+  userId: string
+  passwordHash: string
+  nickname: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  spotifyAccount?: Prisma.SpotifyAccountCreateNestedOneWithoutUserInput
+  location?: Prisma.UserLocationCreateNestedOneWithoutUserInput
+  sentInvitations?: Prisma.InvitationCreateNestedManyWithoutSenderInput
+  receivedInvitations?: Prisma.InvitationCreateNestedManyWithoutReceiverInput
+  friendshipsAsUser1?: Prisma.FriendshipCreateNestedManyWithoutUser1Input
+  friendshipsAsUser2?: Prisma.FriendshipCreateNestedManyWithoutUser2Input
+  chatRoomsAsUser1?: Prisma.ChatRoomCreateNestedManyWithoutUser1Input
+  chatRoomsAsUser2?: Prisma.ChatRoomCreateNestedManyWithoutUser2Input
+}
+
+export type UserUncheckedCreateWithoutSentSongMessagesInput = {
+  id?: number
+  userId: string
+  passwordHash: string
+  nickname: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  spotifyAccount?: Prisma.SpotifyAccountUncheckedCreateNestedOneWithoutUserInput
+  location?: Prisma.UserLocationUncheckedCreateNestedOneWithoutUserInput
+  sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutSenderInput
+  receivedInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutReceiverInput
+  friendshipsAsUser1?: Prisma.FriendshipUncheckedCreateNestedManyWithoutUser1Input
+  friendshipsAsUser2?: Prisma.FriendshipUncheckedCreateNestedManyWithoutUser2Input
+  chatRoomsAsUser1?: Prisma.ChatRoomUncheckedCreateNestedManyWithoutUser1Input
+  chatRoomsAsUser2?: Prisma.ChatRoomUncheckedCreateNestedManyWithoutUser2Input
+}
+
+export type UserCreateOrConnectWithoutSentSongMessagesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSentSongMessagesInput, Prisma.UserUncheckedCreateWithoutSentSongMessagesInput>
+}
+
+export type UserUpsertWithoutSentSongMessagesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSentSongMessagesInput, Prisma.UserUncheckedUpdateWithoutSentSongMessagesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSentSongMessagesInput, Prisma.UserUncheckedCreateWithoutSentSongMessagesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSentSongMessagesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSentSongMessagesInput, Prisma.UserUncheckedUpdateWithoutSentSongMessagesInput>
+}
+
+export type UserUpdateWithoutSentSongMessagesInput = {
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  nickname?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  spotifyAccount?: Prisma.SpotifyAccountUpdateOneWithoutUserNestedInput
+  location?: Prisma.UserLocationUpdateOneWithoutUserNestedInput
+  sentInvitations?: Prisma.InvitationUpdateManyWithoutSenderNestedInput
+  receivedInvitations?: Prisma.InvitationUpdateManyWithoutReceiverNestedInput
+  friendshipsAsUser1?: Prisma.FriendshipUpdateManyWithoutUser1NestedInput
+  friendshipsAsUser2?: Prisma.FriendshipUpdateManyWithoutUser2NestedInput
+  chatRoomsAsUser1?: Prisma.ChatRoomUpdateManyWithoutUser1NestedInput
+  chatRoomsAsUser2?: Prisma.ChatRoomUpdateManyWithoutUser2NestedInput
+}
+
+export type UserUncheckedUpdateWithoutSentSongMessagesInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  nickname?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  spotifyAccount?: Prisma.SpotifyAccountUncheckedUpdateOneWithoutUserNestedInput
+  location?: Prisma.UserLocationUncheckedUpdateOneWithoutUserNestedInput
+  sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutSenderNestedInput
+  receivedInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutReceiverNestedInput
+  friendshipsAsUser1?: Prisma.FriendshipUncheckedUpdateManyWithoutUser1NestedInput
+  friendshipsAsUser2?: Prisma.FriendshipUncheckedUpdateManyWithoutUser2NestedInput
+  chatRoomsAsUser1?: Prisma.ChatRoomUncheckedUpdateManyWithoutUser1NestedInput
+  chatRoomsAsUser2?: Prisma.ChatRoomUncheckedUpdateManyWithoutUser2NestedInput
 }
 
 
@@ -1200,6 +1335,7 @@ export type UserCountOutputType = {
   friendshipsAsUser2: number
   chatRoomsAsUser1: number
   chatRoomsAsUser2: number
+  sentSongMessages: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1209,6 +1345,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   friendshipsAsUser2?: boolean | UserCountOutputTypeCountFriendshipsAsUser2Args
   chatRoomsAsUser1?: boolean | UserCountOutputTypeCountChatRoomsAsUser1Args
   chatRoomsAsUser2?: boolean | UserCountOutputTypeCountChatRoomsAsUser2Args
+  sentSongMessages?: boolean | UserCountOutputTypeCountSentSongMessagesArgs
 }
 
 /**
@@ -1263,6 +1400,13 @@ export type UserCountOutputTypeCountChatRoomsAsUser2Args<ExtArgs extends runtime
   where?: Prisma.ChatRoomWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSentSongMessagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SongMessageWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1279,6 +1423,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   friendshipsAsUser2?: boolean | Prisma.User$friendshipsAsUser2Args<ExtArgs>
   chatRoomsAsUser1?: boolean | Prisma.User$chatRoomsAsUser1Args<ExtArgs>
   chatRoomsAsUser2?: boolean | Prisma.User$chatRoomsAsUser2Args<ExtArgs>
+  sentSongMessages?: boolean | Prisma.User$sentSongMessagesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1303,6 +1448,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   friendshipsAsUser2?: boolean | Prisma.User$friendshipsAsUser2Args<ExtArgs>
   chatRoomsAsUser1?: boolean | Prisma.User$chatRoomsAsUser1Args<ExtArgs>
   chatRoomsAsUser2?: boolean | Prisma.User$chatRoomsAsUser2Args<ExtArgs>
+  sentSongMessages?: boolean | Prisma.User$sentSongMessagesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -1317,6 +1463,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     friendshipsAsUser2: Prisma.$FriendshipPayload<ExtArgs>[]
     chatRoomsAsUser1: Prisma.$ChatRoomPayload<ExtArgs>[]
     chatRoomsAsUser2: Prisma.$ChatRoomPayload<ExtArgs>[]
+    sentSongMessages: Prisma.$SongMessagePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1673,6 +1820,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   friendshipsAsUser2<T extends Prisma.User$friendshipsAsUser2Args<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$friendshipsAsUser2Args<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FriendshipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   chatRoomsAsUser1<T extends Prisma.User$chatRoomsAsUser1Args<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$chatRoomsAsUser1Args<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChatRoomPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   chatRoomsAsUser2<T extends Prisma.User$chatRoomsAsUser2Args<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$chatRoomsAsUser2Args<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChatRoomPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  sentSongMessages<T extends Prisma.User$sentSongMessagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sentSongMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SongMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2235,6 +2383,30 @@ export type User$chatRoomsAsUser2Args<ExtArgs extends runtime.Types.Extensions.I
   take?: number
   skip?: number
   distinct?: Prisma.ChatRoomScalarFieldEnum | Prisma.ChatRoomScalarFieldEnum[]
+}
+
+/**
+ * User.sentSongMessages
+ */
+export type User$sentSongMessagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SongMessage
+   */
+  select?: Prisma.SongMessageSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SongMessage
+   */
+  omit?: Prisma.SongMessageOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SongMessageInclude<ExtArgs> | null
+  where?: Prisma.SongMessageWhereInput
+  orderBy?: Prisma.SongMessageOrderByWithRelationInput | Prisma.SongMessageOrderByWithRelationInput[]
+  cursor?: Prisma.SongMessageWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SongMessageScalarFieldEnum | Prisma.SongMessageScalarFieldEnum[]
 }
 
 /**
