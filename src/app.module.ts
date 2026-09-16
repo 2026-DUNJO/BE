@@ -13,6 +13,7 @@ import { MatchingModule } from './matching/matching.module.js';
 import { LocationModule } from './location/location.module.js';
 import { InvitationsModule } from './invitations/invitations.module.js';
 import { FriendshipsModule } from './friendships/friendships.module.js';
+import { ChatModule } from './chat/chat.module.js';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { FriendshipsModule } from './friendships/friendships.module.js';
     LocationModule,
     InvitationsModule,
     FriendshipsModule,
+    ChatModule,
   ],
   controllers: [AppController],
   providers: [AppService],
