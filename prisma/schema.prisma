@@ -13,6 +13,24 @@ model User {
   passwordHash String
   nickname     String
 
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  spotifyAccount SpotifyAccount?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SpotifyAccount {
+  id Int @id @default(autoincrement())
+
+  userId Int  @unique
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  spotifyUserId String @unique
+
+  accessToken  String @db.Text
+  refreshToken String @db.Text
+  expiresAt    DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

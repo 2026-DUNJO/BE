@@ -397,7 +397,8 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 
 export const ModelName = {
-  User: 'User'
+  User: 'User',
+  SpotifyAccount: 'SpotifyAccount'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -413,7 +414,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user"
+    modelProps: "user" | "spotifyAccount"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -483,6 +484,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    SpotifyAccount: {
+      payload: Prisma.$SpotifyAccountPayload<ExtArgs>
+      fields: Prisma.SpotifyAccountFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SpotifyAccountFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SpotifyAccountPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SpotifyAccountFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SpotifyAccountPayload>
+        }
+        findFirst: {
+          args: Prisma.SpotifyAccountFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SpotifyAccountPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SpotifyAccountFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SpotifyAccountPayload>
+        }
+        findMany: {
+          args: Prisma.SpotifyAccountFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SpotifyAccountPayload>[]
+        }
+        create: {
+          args: Prisma.SpotifyAccountCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SpotifyAccountPayload>
+        }
+        createMany: {
+          args: Prisma.SpotifyAccountCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.SpotifyAccountDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SpotifyAccountPayload>
+        }
+        update: {
+          args: Prisma.SpotifyAccountUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SpotifyAccountPayload>
+        }
+        deleteMany: {
+          args: Prisma.SpotifyAccountDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SpotifyAccountUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.SpotifyAccountUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SpotifyAccountPayload>
+        }
+        aggregate: {
+          args: Prisma.SpotifyAccountAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSpotifyAccount>
+        }
+        groupBy: {
+          args: Prisma.SpotifyAccountGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SpotifyAccountGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SpotifyAccountCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SpotifyAccountCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -534,6 +601,20 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+export const SpotifyAccountScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  spotifyUserId: 'spotifyUserId',
+  accessToken: 'accessToken',
+  refreshToken: 'refreshToken',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SpotifyAccountScalarFieldEnum = (typeof SpotifyAccountScalarFieldEnum)[keyof typeof SpotifyAccountScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -549,6 +630,15 @@ export const UserOrderByRelevanceFieldEnum = {
 } as const
 
 export type UserOrderByRelevanceFieldEnum = (typeof UserOrderByRelevanceFieldEnum)[keyof typeof UserOrderByRelevanceFieldEnum]
+
+
+export const SpotifyAccountOrderByRelevanceFieldEnum = {
+  spotifyUserId: 'spotifyUserId',
+  accessToken: 'accessToken',
+  refreshToken: 'refreshToken'
+} as const
+
+export type SpotifyAccountOrderByRelevanceFieldEnum = (typeof SpotifyAccountOrderByRelevanceFieldEnum)[keyof typeof SpotifyAccountOrderByRelevanceFieldEnum]
 
 
 
@@ -736,6 +826,7 @@ export interface PrismaClientOptionsWithAdapter extends PrismaClientBaseOptions 
 export type PrismaClientOptions = PrismaClientOptionsWithAccelerateUrl | PrismaClientOptionsWithAdapter
 export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
+  spotifyAccount?: Prisma.SpotifyAccountOmit
 }
 
 /* Types for Logging */

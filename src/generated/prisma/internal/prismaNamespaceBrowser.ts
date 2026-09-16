@@ -51,7 +51,8 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  User: 'User'
+  User: 'User',
+  SpotifyAccount: 'SpotifyAccount'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -82,6 +83,20 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+export const SpotifyAccountScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  spotifyUserId: 'spotifyUserId',
+  accessToken: 'accessToken',
+  refreshToken: 'refreshToken',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SpotifyAccountScalarFieldEnum = (typeof SpotifyAccountScalarFieldEnum)[keyof typeof SpotifyAccountScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -97,4 +112,13 @@ export const UserOrderByRelevanceFieldEnum = {
 } as const
 
 export type UserOrderByRelevanceFieldEnum = (typeof UserOrderByRelevanceFieldEnum)[keyof typeof UserOrderByRelevanceFieldEnum]
+
+
+export const SpotifyAccountOrderByRelevanceFieldEnum = {
+  spotifyUserId: 'spotifyUserId',
+  accessToken: 'accessToken',
+  refreshToken: 'refreshToken'
+} as const
+
+export type SpotifyAccountOrderByRelevanceFieldEnum = (typeof SpotifyAccountOrderByRelevanceFieldEnum)[keyof typeof SpotifyAccountOrderByRelevanceFieldEnum]
 
