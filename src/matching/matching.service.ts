@@ -1,5 +1,10 @@
 import { Injectable } from '@nestjs/common';
 
+import {
+  GroqService,
+  type MatchAIResult,
+} from '../groq/groq.service.js';
+
 import { LastfmService } from '../lastfm/lastfm.service.js';
 import { LocationService } from '../location/location.service.js';
 import { SpotifyService } from '../spotify/spotify.service.js';
@@ -32,8 +37,9 @@ interface TrackConnection {
 
   match: number;
 
-  // 어떤 방식으로 연결됐는지 확인용
-  connectionType: 'SAME_TRACK' | 'LASTFM_SIMILAR';
+  connectionType:
+    | 'SAME_TRACK'
+    | 'LASTFM_SIMILAR';
 }
 
 interface SimilarityResult {
@@ -52,6 +58,7 @@ export class MatchingService {
     private readonly lastfmService: LastfmService,
     private readonly locationService: LocationService,
     private readonly spotifyService: SpotifyService,
+    private readonly groqService: GroqService,
   ) {}
 
   // =========================================
@@ -59,7 +66,10 @@ export class MatchingService {
   // =========================================
 
   async searchMatch(userId: number) {
-    // 1. 내 최근 재생곡
+    // -----------------------------------------
+    // 1. 내 최근 재생곡 조회
+    // -----------------------------------------
+
     const myTracks =
       (await this.spotifyService.getRecentlyPlayed(
         userId,
@@ -74,7 +84,10 @@ export class MatchingService {
       };
     }
 
-    // 2. 1km 이내 사용자
+    // -----------------------------------------
+    // 2. 1km 이내 사용자 조회
+    // -----------------------------------------
+
     const nearbyUsers =
       await this.locationService.findNearbyUsers(
         userId,
@@ -88,12 +101,10 @@ export class MatchingService {
       };
     }
 
-    // =========================================
-    // 3. 내 최근곡들의 Last.fm Similar TOP 50
-    //
-    // 후보마다 다시 Last.fm을 호출하지 않고
-    // 한 번 조회해서 재사용
-    // =========================================
+    // -----------------------------------------
+    // 3. 내 곡들의 Last.fm Similar TOP 50
+    //    미리 한 번만 조회
+    // -----------------------------------------
 
     const mySimilarTracks =
       new Map<string, SimilarTrack[]>();
@@ -110,8 +121,13 @@ export class MatchingService {
           myTrack.spotifyTrackId,
           similarTracks,
         );
-      } catch {
-        // 특정 곡의 Last.fm 조회가 실패해도
+      } catch (error) {
+        console.error(
+          `Last.fm 조회 실패: ${myTrack.artist} - ${myTrack.title}`,
+          error,
+        );
+
+        // 특정 곡에서 Last.fm 조회가 실패해도
         // 전체 매칭은 계속 진행
         mySimilarTracks.set(
           myTrack.spotifyTrackId,
@@ -120,14 +136,15 @@ export class MatchingService {
       }
     }
 
-    // =========================================
+    // -----------------------------------------
     // 4. 주변 사용자 각각 비교
-    // =========================================
+    // -----------------------------------------
 
     const candidates = [];
 
     for (const nearbyUser of nearbyUsers) {
       try {
+        // 상대방 최근곡
         const otherTracks =
           (await this.spotifyService.getRecentlyPlayed(
             nearbyUser.id,
@@ -138,6 +155,7 @@ export class MatchingService {
           continue;
         }
 
+        // 곡 연결 탐색
         const connections =
           this.findTrackConnectionsFromCache(
             myTracks,
@@ -145,11 +163,53 @@ export class MatchingService {
             mySimilarTracks,
           );
 
+        // DUNJO 유사도 계산
         const similarityResult =
           this.calculateDunjoSimilarity(
             myTracks,
             connections,
           );
+
+        // -------------------------------------
+        // 대표 연결곡 선정
+        //
+        // calculateDunjoSimilarity에서
+        // 각 내 곡의 strongest connection만 남기므로
+        // 그중 가장 강한 연결 하나를 대표로 사용
+        // -------------------------------------
+
+        const representativeConnection =
+          this.getRepresentativeConnection(
+            similarityResult.connections,
+          );
+
+        // -------------------------------------
+        // AI 분석
+        //
+        // 70점 이상으로 이미 MATCH가 확정된
+        // 사용자에게만 Groq 호출
+        // -------------------------------------
+
+        let ai: MatchAIResult | null = null;
+
+        if (similarityResult.matched) {
+          try {
+            ai =
+              await this.groqService.generateMatchAI(
+                similarityResult.similarity,
+                similarityResult.coverage,
+                similarityResult.strength,
+                similarityResult.connections,
+              );
+          } catch (error) {
+            // AI 분석이 실패해도
+            // 이미 성립된 MATCH 자체는 유지
+            console.error(
+              `Groq 매칭 분석 실패: user ${nearbyUser.id}`,
+              error,
+            );
+          }
+        }
 
         candidates.push({
           user: {
@@ -162,27 +222,37 @@ export class MatchingService {
             nearbyUser.distanceKm,
 
           ...similarityResult,
+
+          representativeConnection,
+
+          ai,
         });
-      } catch {
-        // Spotify 미연결 등
-        // 특정 사용자 문제 때문에
-        // 전체 매칭이 중단되지 않도록 건너뜀
+      } catch (error) {
+        // 개발 중에는 에러 원인을 확인할 수 있도록 출력
+        console.error(
+          `매칭 후보 처리 실패: user ${nearbyUser.id}`,
+          error,
+        );
+
+        // Spotify 미연결 등 특정 사용자 문제로
+        // 전체 검색이 중단되지 않도록 건너뜀
         continue;
       }
     }
 
-    // =========================================
+    // -----------------------------------------
     // 5. 유사도 높은 순 정렬
-    // =========================================
+    // -----------------------------------------
 
     candidates.sort(
       (a, b) =>
-        b.similarity - a.similarity,
+        b.similarity -
+        a.similarity,
     );
 
-    // =========================================
-    // 6. 70점 이상만 매칭 성공
-    // =========================================
+    // -----------------------------------------
+    // 6. 70점 이상만 실제 매칭
+    // -----------------------------------------
 
     const matches =
       candidates.filter(
@@ -196,13 +266,13 @@ export class MatchingService {
 
       matches,
 
-      // 개발/점수 검증용
+      // 개발 중 점수 확인용
       candidates,
     };
   }
 
   // =========================================
-  // 곡 연결 탐색
+  // Last.fm 결과를 이용한 곡 연결 탐색
   //
   // 1순위: Spotify 동일곡
   // 2순위: Last.fm Similar TOP 50
@@ -219,9 +289,9 @@ export class MatchingService {
     const connections: TrackConnection[] = [];
 
     for (const myTrack of myTracks) {
-      // =======================================
-      // ① 상대방에게 동일한 Spotify 곡이 있는지
-      // =======================================
+      // ---------------------------------------
+      // ① 동일 Spotify 곡 확인
+      // ---------------------------------------
 
       const sameTrack =
         otherTracks.find(
@@ -254,21 +324,21 @@ export class MatchingService {
               sameTrack.artist,
           },
 
-          // 완전히 동일한 곡
+          // 완전히 동일한 Spotify 곡
           match: 1,
 
           connectionType:
             'SAME_TRACK',
         });
 
-        // 동일곡을 이미 발견했으므로
-        // 이 myTrack은 Last.fm 비교할 필요 없음
+        // 동일곡을 찾았으면
+        // 이 곡은 Last.fm 비교 불필요
         continue;
       }
 
-      // =======================================
+      // ---------------------------------------
       // ② 동일곡이 없다면 Last.fm 비교
-      // =======================================
+      // ---------------------------------------
 
       const similarTracks =
         mySimilarTracks.get(
@@ -347,7 +417,12 @@ export class MatchingService {
           myTrack.spotifyTrackId,
           similarTracks,
         );
-      } catch {
+      } catch (error) {
+        console.error(
+          `Last.fm 조회 실패: ${myTrack.artist} - ${myTrack.title}`,
+          error,
+        );
+
         mySimilarTracks.set(
           myTrack.spotifyTrackId,
           [],
@@ -382,12 +457,9 @@ export class MatchingService {
       };
     }
 
-    // =========================================
+    // -----------------------------------------
     // 내 곡 하나당 가장 강한 연결 하나만 사용
-    //
-    // 한 곡이 상대곡 여러 개와 연결돼도
-    // 점수가 과도하게 올라가는 것 방지
-    // =========================================
+    // -----------------------------------------
 
     const bestConnectionByTrack =
       new Map<
@@ -421,12 +493,12 @@ export class MatchingService {
         bestConnectionByTrack.values(),
       );
 
-    // =========================================
+    // -----------------------------------------
     // Coverage
     //
-    // 내 최근곡 중 몇 곡이
-    // 상대와 연결됐는가?
-    // =========================================
+    // 내 최근곡 중 몇 곡에서
+    // 상대와 접점이 발견됐는가
+    // -----------------------------------------
 
     const connectedTrackCount =
       bestConnections.length;
@@ -435,16 +507,17 @@ export class MatchingService {
       connectedTrackCount /
       myTracks.length;
 
-    // =========================================
+    // -----------------------------------------
     // Strength
     //
-    // 연결된 곡들이 얼마나 강하게
-    // 연결되어 있는가?
-    // =========================================
+    // 연결된 곡들의 평균 연결 강도
+    // -----------------------------------------
 
     let strength = 0;
 
-    if (bestConnections.length > 0) {
+    if (
+      bestConnections.length > 0
+    ) {
       const totalStrength =
         bestConnections.reduce(
           (
@@ -461,19 +534,23 @@ export class MatchingService {
         bestConnections.length;
     }
 
-    // =========================================
-    // DUNJO Score
+    // -----------------------------------------
+    // Coverage 보정
     //
-    // 현재 테스트 공식
-    //
-    // Coverage 60%
-    // Strength 40%
-    //
-    // 추후 실제 데이터로 조정 예정
-    // =========================================
+    // 취향이 완전히 같지 않아도
+    // 몇 개의 강한 접점이 있으면
+    // 매칭될 수 있도록 sqrt 사용
+    // -----------------------------------------
 
     const adjustedCoverage =
-        Math.sqrt(coverage);
+      Math.sqrt(coverage);
+
+    // -----------------------------------------
+    // DUNJO Score
+    //
+    // 보정 Coverage = 60%
+    // Strength       = 40%
+    // -----------------------------------------
 
     const rawSimilarity =
       adjustedCoverage * 60 +
@@ -484,13 +561,13 @@ export class MatchingService {
         rawSimilarity * 100,
       ) / 100;
 
-    // 현재 매칭 기준
     const matched =
       similarity >= 70;
 
     return {
       similarity,
 
+      // API에는 실제 Coverage %를 반환
       coverage:
         Math.round(
           coverage * 10000,
@@ -511,6 +588,56 @@ export class MatchingService {
       connections:
         bestConnections,
     };
+  }
+
+  // =========================================
+  // MatchSuccess 화면에 보여줄
+  // 대표 연결곡 선정
+  // =========================================
+
+  private getRepresentativeConnection(
+    connections: TrackConnection[],
+  ): TrackConnection | null {
+    if (connections.length === 0) {
+      return null;
+    }
+
+    return connections.reduce(
+      (best, current) => {
+        // -------------------------------------
+        // 연결 강도가 더 높은 것을 우선
+        // -------------------------------------
+
+        if (
+          current.match >
+          best.match
+        ) {
+          return current;
+        }
+
+        if (
+          current.match <
+          best.match
+        ) {
+          return best;
+        }
+
+        // -------------------------------------
+        // 강도가 같다면 동일곡을 우선
+        // -------------------------------------
+
+        if (
+          current.connectionType ===
+            'SAME_TRACK' &&
+          best.connectionType !==
+            'SAME_TRACK'
+        ) {
+          return current;
+        }
+
+        return best;
+      },
+    );
   }
 
   // =========================================
