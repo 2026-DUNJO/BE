@@ -1,6 +1,9 @@
 import {
   Controller,
+  Delete,
   Get,
+  Param,
+  ParseIntPipe,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -18,6 +21,9 @@ export class FriendshipsController {
     private readonly friendshipsService: FriendshipsService,
   ) {}
 
+  // =========================================
+  // 내 친구 목록 조회
+  // =========================================
   @UseGuards(AuthGuard)
   @Get()
   async getMyFriends(
@@ -25,6 +31,21 @@ export class FriendshipsController {
   ) {
     return this.friendshipsService.getMyFriends(
       request.user.sub,
+    );
+  }
+
+  // =========================================
+  // 친구 끊기
+  // =========================================
+  @UseGuards(AuthGuard)
+  @Delete(':id')
+  async deleteFriendship(
+    @Req() request: AuthenticatedRequest,
+    @Param('id', ParseIntPipe) friendshipId: number,
+  ) {
+    return this.friendshipsService.deleteFriendship(
+      request.user.sub,
+      friendshipId,
     );
   }
 }
