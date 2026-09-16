@@ -1,103 +1,140 @@
 import { Injectable } from '@nestjs/common';
 
-interface MusicDNA {
-  energy: number;
-  dreaminess: number;
-  confidence: number;
-  darkness: number;
-  danceability: number;
-  moodTags: string[];
+import { LastfmService } from '../lastfm/lastfm.service.js';
+
+interface RecentTrack {
+  spotifyTrackId: string;
+  title: string;
+  artist: string;
+}
+
+interface SimilarTrack {
+  title: string;
+  artist: string;
+  match: number;
+  lastfmUrl?: string;
+}
+
+interface TrackConnection {
+  myTrack: {
+    spotifyTrackId: string;
+    title: string;
+    artist: string;
+  };
+
+  otherTrack: {
+    spotifyTrackId: string;
+    title: string;
+    artist: string;
+  };
+
+  match: number;
 }
 
 @Injectable()
 export class MatchingService {
-  calculateSimilarity(
-    myDNA: MusicDNA,
-    otherDNA: MusicDNA,
-  ) {
-    const features: (keyof Omit<MusicDNA, 'moodTags'>)[] = [
-      'energy',
-      'dreaminess',
-      'confidence',
-      'darkness',
-      'danceability',
-    ];
+  constructor(
+    private readonly lastfmService: LastfmService,
+  ) {}
 
-    // 각 특성의 차이 계산
-    const differences = features.map((feature) =>
-      Math.abs(myDNA[feature] - otherDNA[feature]),
+  // =========================================
+  // 두 사용자의 최근곡 사이 연결 탐색
+  // =========================================
+
+  async findTrackConnections(
+    myTracks: RecentTrack[],
+    otherTracks: RecentTrack[],
+  ): Promise<TrackConnection[]> {
+    const connections: TrackConnection[] = [];
+
+    // 내 최근곡을 하나씩 검사
+    for (const myTrack of myTracks) {
+      // 내 곡의 Last.fm Similar TOP 50 조회
+      const similarTracks =
+        (await this.lastfmService.getSimilarTracks(
+          myTrack.artist,
+          myTrack.title,
+        )) as SimilarTrack[];
+
+      // Similar TOP 50 안에
+      // 상대 최근곡이 존재하는지 확인
+      for (const otherTrack of otherTracks) {
+        const found = similarTracks.find(
+          (similarTrack) =>
+            this.isSameTrack(
+              similarTrack,
+              otherTrack,
+            ),
+        );
+
+        if (!found) {
+          continue;
+        }
+
+        connections.push({
+          myTrack: {
+            spotifyTrackId:
+              myTrack.spotifyTrackId,
+
+            title:
+              myTrack.title,
+
+            artist:
+              myTrack.artist,
+          },
+
+          otherTrack: {
+            spotifyTrackId:
+              otherTrack.spotifyTrackId,
+
+            title:
+              otherTrack.title,
+
+            artist:
+              otherTrack.artist,
+          },
+
+          match:
+            found.match,
+        });
+      }
+    }
+
+    return connections;
+  }
+
+  // =========================================
+  // 같은 곡인지 비교
+  // =========================================
+
+  private isSameTrack(
+    first: {
+      title: string;
+      artist: string;
+    },
+    second: {
+      title: string;
+      artist: string;
+    },
+  ): boolean {
+    return (
+      this.normalize(first.title) ===
+        this.normalize(second.title) &&
+      this.normalize(first.artist) ===
+        this.normalize(second.artist)
     );
+  }
 
-    // 평균 차이
-    const averageDifference =
-      differences.reduce(
-        (sum, difference) => sum + difference,
-        0,
-      ) / differences.length;
+  // =========================================
+  // 문자열 정규화
+  // =========================================
 
-    // 차이가 0이면 100%, 차이가 100이면 0%
-    const numericSimilarity =
-      100 - averageDifference;
-
-    // 공통 mood tag
-    const commonTags = myDNA.moodTags.filter(
-      (tag) =>
-        otherDNA.moodTags.some(
-          (otherTag) =>
-            otherTag.toLowerCase() ===
-            tag.toLowerCase(),
-        ),
-    );
-
-    // 태그 하나당 +3점, 최대 +9점
-    const tagBonus = commonTags.length * 3;
-
-    const similarity = Math.min(
-      100,
-      Math.round(
-        numericSimilarity + tagBonus,
-      ),
-    );
-
-    return {
-      similarity,
-      commonTags,
-
-      details: {
-        energy:
-          100 -
-          Math.abs(
-            myDNA.energy - otherDNA.energy,
-          ),
-
-        dreaminess:
-          100 -
-          Math.abs(
-            myDNA.dreaminess -
-              otherDNA.dreaminess,
-          ),
-
-        confidence:
-          100 -
-          Math.abs(
-            myDNA.confidence -
-              otherDNA.confidence,
-          ),
-
-        darkness:
-          100 -
-          Math.abs(
-            myDNA.darkness -
-              otherDNA.darkness,
-          ),
-
-        danceability:
-          100 -
-          Math.abs(
-            myDNA.danceability -
-              otherDNA.danceability,
-          ),
-      },
-    };
+  private normalize(
+    value: string,
+  ): string {
+    return value
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, ' ');
   }
 }

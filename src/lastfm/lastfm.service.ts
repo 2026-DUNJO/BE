@@ -109,7 +109,7 @@ export class LastfmService {
       track,
       format: 'json',
       autocorrect: '1',
-      limit: '10',
+      limit: '50',
     });
 
     const response = await fetch(
