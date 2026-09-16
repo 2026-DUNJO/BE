@@ -398,7 +398,8 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   User: 'User',
-  SpotifyAccount: 'SpotifyAccount'
+  SpotifyAccount: 'SpotifyAccount',
+  TrackAnalysis: 'TrackAnalysis'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -414,7 +415,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "spotifyAccount"
+    modelProps: "user" | "spotifyAccount" | "trackAnalysis"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -550,6 +551,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    TrackAnalysis: {
+      payload: Prisma.$TrackAnalysisPayload<ExtArgs>
+      fields: Prisma.TrackAnalysisFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TrackAnalysisFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackAnalysisPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TrackAnalysisFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackAnalysisPayload>
+        }
+        findFirst: {
+          args: Prisma.TrackAnalysisFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackAnalysisPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TrackAnalysisFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackAnalysisPayload>
+        }
+        findMany: {
+          args: Prisma.TrackAnalysisFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackAnalysisPayload>[]
+        }
+        create: {
+          args: Prisma.TrackAnalysisCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackAnalysisPayload>
+        }
+        createMany: {
+          args: Prisma.TrackAnalysisCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.TrackAnalysisDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackAnalysisPayload>
+        }
+        update: {
+          args: Prisma.TrackAnalysisUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackAnalysisPayload>
+        }
+        deleteMany: {
+          args: Prisma.TrackAnalysisDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TrackAnalysisUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.TrackAnalysisUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackAnalysisPayload>
+        }
+        aggregate: {
+          args: Prisma.TrackAnalysisAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTrackAnalysis>
+        }
+        groupBy: {
+          args: Prisma.TrackAnalysisGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TrackAnalysisGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TrackAnalysisCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TrackAnalysisCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -615,12 +682,38 @@ export const SpotifyAccountScalarFieldEnum = {
 export type SpotifyAccountScalarFieldEnum = (typeof SpotifyAccountScalarFieldEnum)[keyof typeof SpotifyAccountScalarFieldEnum]
 
 
+export const TrackAnalysisScalarFieldEnum = {
+  id: 'id',
+  spotifyTrackId: 'spotifyTrackId',
+  title: 'title',
+  artist: 'artist',
+  albumImage: 'albumImage',
+  energy: 'energy',
+  dreaminess: 'dreaminess',
+  confidence: 'confidence',
+  darkness: 'darkness',
+  danceability: 'danceability',
+  moodTags: 'moodTags',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TrackAnalysisScalarFieldEnum = (typeof TrackAnalysisScalarFieldEnum)[keyof typeof TrackAnalysisScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const UserOrderByRelevanceFieldEnum = {
@@ -639,6 +732,41 @@ export const SpotifyAccountOrderByRelevanceFieldEnum = {
 } as const
 
 export type SpotifyAccountOrderByRelevanceFieldEnum = (typeof SpotifyAccountOrderByRelevanceFieldEnum)[keyof typeof SpotifyAccountOrderByRelevanceFieldEnum]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
+
+
+export const QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
+} as const
+
+export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const TrackAnalysisOrderByRelevanceFieldEnum = {
+  spotifyTrackId: 'spotifyTrackId',
+  title: 'title',
+  artist: 'artist',
+  albumImage: 'albumImage'
+} as const
+
+export type TrackAnalysisOrderByRelevanceFieldEnum = (typeof TrackAnalysisOrderByRelevanceFieldEnum)[keyof typeof TrackAnalysisOrderByRelevanceFieldEnum]
 
 
 
@@ -665,6 +793,20 @@ export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 
  * Reference to a field of type 'DateTime'
  */
 export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+    
+
+
+/**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -827,6 +969,7 @@ export type PrismaClientOptions = PrismaClientOptionsWithAccelerateUrl | PrismaC
 export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
   spotifyAccount?: Prisma.SpotifyAccountOmit
+  trackAnalysis?: Prisma.TrackAnalysisOmit
 }
 
 /* Types for Logging */

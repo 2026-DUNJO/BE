@@ -51,3 +51,8 @@ export type User = Prisma.UserModel
  * 
  */
 export type SpotifyAccount = Prisma.SpotifyAccountModel
+/**
+ * Model TrackAnalysis
+ * 
+ */
+export type TrackAnalysis = Prisma.TrackAnalysisModel

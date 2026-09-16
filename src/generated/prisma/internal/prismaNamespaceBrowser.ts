@@ -52,7 +52,8 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
-  SpotifyAccount: 'SpotifyAccount'
+  SpotifyAccount: 'SpotifyAccount',
+  TrackAnalysis: 'TrackAnalysis'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -97,12 +98,38 @@ export const SpotifyAccountScalarFieldEnum = {
 export type SpotifyAccountScalarFieldEnum = (typeof SpotifyAccountScalarFieldEnum)[keyof typeof SpotifyAccountScalarFieldEnum]
 
 
+export const TrackAnalysisScalarFieldEnum = {
+  id: 'id',
+  spotifyTrackId: 'spotifyTrackId',
+  title: 'title',
+  artist: 'artist',
+  albumImage: 'albumImage',
+  energy: 'energy',
+  dreaminess: 'dreaminess',
+  confidence: 'confidence',
+  darkness: 'darkness',
+  danceability: 'danceability',
+  moodTags: 'moodTags',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TrackAnalysisScalarFieldEnum = (typeof TrackAnalysisScalarFieldEnum)[keyof typeof TrackAnalysisScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const UserOrderByRelevanceFieldEnum = {
@@ -121,4 +148,39 @@ export const SpotifyAccountOrderByRelevanceFieldEnum = {
 } as const
 
 export type SpotifyAccountOrderByRelevanceFieldEnum = (typeof SpotifyAccountOrderByRelevanceFieldEnum)[keyof typeof SpotifyAccountOrderByRelevanceFieldEnum]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
+
+
+export const QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
+} as const
+
+export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const TrackAnalysisOrderByRelevanceFieldEnum = {
+  spotifyTrackId: 'spotifyTrackId',
+  title: 'title',
+  artist: 'artist',
+  albumImage: 'albumImage'
+} as const
+
+export type TrackAnalysisOrderByRelevanceFieldEnum = (typeof TrackAnalysisOrderByRelevanceFieldEnum)[keyof typeof TrackAnalysisOrderByRelevanceFieldEnum]
 
