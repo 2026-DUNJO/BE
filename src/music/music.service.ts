@@ -2,18 +2,21 @@ import { Injectable } from '@nestjs/common';
 
 import { SpotifyService } from '../spotify/spotify.service.js';
 import { LastfmService } from '../lastfm/lastfm.service.js';
+import { GroqService } from '../groq/groq.service.js';
 
 @Injectable()
 export class MusicService {
   constructor(
     private readonly spotifyService: SpotifyService,
     private readonly lastfmService: LastfmService,
+    private readonly groqService: GroqService,
   ) {}
 
   async analyzeCurrentTrack(userId: number) {
-    // 1. Spotify 현재곡
     const spotify =
-      await this.spotifyService.getCurrentTrack(userId);
+      await this.spotifyService.getCurrentTrack(
+        userId,
+      );
 
     if (!spotify.track) {
       return {
@@ -21,15 +24,12 @@ export class MusicService {
         track: null,
         tags: [],
         similarTracks: [],
+        musicDNA: null,
       };
     }
 
-    const {
-      title,
-      artist,
-    } = spotify.track;
+    const { title, artist } = spotify.track;
 
-    // 2. Last.fm 곡 정보 + 유사곡 병렬 요청
     const [trackInfo, similarTracks] =
       await Promise.all([
         this.lastfmService.getTrackInfo(
@@ -43,14 +43,20 @@ export class MusicService {
         ),
       ]);
 
+    const musicDNA =
+      await this.groqService.analyzeMusic(
+        title,
+        artist,
+        trackInfo.tags,
+        similarTracks,
+      );
+
     return {
       isPlaying: spotify.isPlaying,
-
       track: spotify.track,
-
       tags: trackInfo.tags,
-
       similarTracks,
+      musicDNA,
     };
   }
 }
