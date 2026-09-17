@@ -18,7 +18,7 @@ async function bootstrap() {
   app.enableCors({
     origin: [
     'http://localhost:5173',
-    'https://dunjo-phi.vercel.app',
+    'https://lets-dunjo.vercel.app',
     ],
     Credentials: true,
   });
