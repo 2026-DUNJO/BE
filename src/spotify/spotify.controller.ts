@@ -52,24 +52,20 @@ export class SpotifyController {
   // Spotify OAuth Callback
   // =========================================
 
-  @Get('callback')
-  @Redirect(
-    'http://localhost:5173/home',
-    302,
-  )
-  async callback(
-    @Query('code') code: string,
-    @Query('state') state: string,
-  ) {
-    await this.spotifyService.handleCallback(
-      code,
-      state,
-    );
-
-    return {
-      url: 'http://localhost:5173/home',
-    };
-  }
+@Get('callback')
+@Redirect(
+  'https://lets-dunjo.vercel.app/home',
+  302,
+)
+async callback(
+  @Query('code') code: string,
+  @Query('state') state: string,
+) {
+  await this.spotifyService.handleCallback(
+    code,
+    state,
+  );
+}
 
   // =========================================
   // 현재 재생 중인 곡
