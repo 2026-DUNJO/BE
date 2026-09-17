@@ -13,6 +13,8 @@ interface RecentTrack {
   spotifyTrackId: string;
   title: string;
   artist: string;
+  albumImage?: string | null;
+  spotifyUrl?: string | null;
 }
 
 interface SimilarTrack {
@@ -27,12 +29,16 @@ interface TrackConnection {
     spotifyTrackId: string;
     title: string;
     artist: string;
+    albumImage?: string | null;
+    spotifyUrl?: string | null;
   };
 
   otherTrack: {
     spotifyTrackId: string;
     title: string;
     artist: string;
+    albumImage?: string | null;
+    spotifyUrl?: string | null;
   };
 
   match: number;
@@ -311,6 +317,12 @@ export class MatchingService {
 
             artist:
               myTrack.artist,
+
+            albumImage:
+              myTrack.albumImage,
+
+            spotifyUrl:
+              myTrack.spotifyUrl,
           },
 
           otherTrack: {
@@ -322,6 +334,12 @@ export class MatchingService {
 
             artist:
               sameTrack.artist,
+
+            albumImage:
+              sameTrack.albumImage,
+
+            spotifyUrl:
+              sameTrack.spotifyUrl,
           },
 
           // 완전히 동일한 Spotify 곡
@@ -369,6 +387,12 @@ export class MatchingService {
 
             artist:
               myTrack.artist,
+        
+            albumImage:
+              myTrack.albumImage,
+
+            spotifyUrl:
+              myTrack.spotifyUrl,
           },
 
           otherTrack: {
@@ -380,6 +404,12 @@ export class MatchingService {
 
             artist:
               otherTrack.artist,
+
+            albumImage:
+              otherTrack.albumImage,
+
+            spotifyUrl:
+              otherTrack.spotifyUrl,
           },
 
           match:

@@ -1094,6 +1094,7 @@ export const SongMessageScalarFieldEnum = {
   trackArtist: 'trackArtist',
   albumImage: 'albumImage',
   spotifyUrl: 'spotifyUrl',
+  readAt: 'readAt',
   createdAt: 'createdAt'
 } as const
 

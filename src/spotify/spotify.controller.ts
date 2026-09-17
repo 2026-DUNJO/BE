@@ -2,6 +2,7 @@ import {
   Controller,
   Get,
   Query,
+  Redirect,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -19,7 +20,24 @@ export class SpotifyController {
     private readonly spotifyService: SpotifyService,
   ) {}
 
+  // =========================================
+  // Spotify 연결 상태 확인
+  // =========================================
+
+  @UseGuards(AuthGuard)
+  @Get('status')
+  getStatus(
+    @Req() request: AuthenticatedRequest,
+  ) {
+    return this.spotifyService.getConnectionStatus(
+      request.user.sub,
+    );
+  }
+
+  // =========================================
   // Spotify 로그인
+  // =========================================
+
   @UseGuards(AuthGuard)
   @Get('login')
   login(
@@ -30,19 +48,33 @@ export class SpotifyController {
     );
   }
 
+  // =========================================
   // Spotify OAuth Callback
+  // =========================================
+
   @Get('callback')
-  callback(
+  @Redirect(
+    'http://localhost:5173/home',
+    302,
+  )
+  async callback(
     @Query('code') code: string,
     @Query('state') state: string,
   ) {
-    return this.spotifyService.handleCallback(
+    await this.spotifyService.handleCallback(
       code,
       state,
     );
+
+    return {
+      url: 'http://localhost:5173/home',
+    };
   }
 
+  // =========================================
   // 현재 재생 중인 곡
+  // =========================================
+
   @UseGuards(AuthGuard)
   @Get('current-track')
   getCurrentTrack(
@@ -53,7 +85,10 @@ export class SpotifyController {
     );
   }
 
+  // =========================================
   // 최근 재생곡 20개
+  // =========================================
+
   @UseGuards(AuthGuard)
   @Get('recently-played')
   getRecentlyPlayed(
@@ -62,6 +97,22 @@ export class SpotifyController {
     return this.spotifyService.getRecentlyPlayed(
       request.user.sub,
       20,
+    );
+  }
+
+  // =========================================
+  // Spotify 곡 검색
+  // =========================================
+
+  @UseGuards(AuthGuard)
+  @Get('search')
+  searchTracks(
+    @Req() request: AuthenticatedRequest,
+    @Query('q') query: string,
+  ) {
+    return this.spotifyService.searchTracks(
+      request.user.sub,
+      query,
     );
   }
 }

@@ -47,6 +47,7 @@ export type SongMessageMinAggregateOutputType = {
   trackArtist: string | null
   albumImage: string | null
   spotifyUrl: string | null
+  readAt: Date | null
   createdAt: Date | null
 }
 
@@ -59,6 +60,7 @@ export type SongMessageMaxAggregateOutputType = {
   trackArtist: string | null
   albumImage: string | null
   spotifyUrl: string | null
+  readAt: Date | null
   createdAt: Date | null
 }
 
@@ -71,6 +73,7 @@ export type SongMessageCountAggregateOutputType = {
   trackArtist: number
   albumImage: number
   spotifyUrl: number
+  readAt: number
   createdAt: number
   _all: number
 }
@@ -97,6 +100,7 @@ export type SongMessageMinAggregateInputType = {
   trackArtist?: true
   albumImage?: true
   spotifyUrl?: true
+  readAt?: true
   createdAt?: true
 }
 
@@ -109,6 +113,7 @@ export type SongMessageMaxAggregateInputType = {
   trackArtist?: true
   albumImage?: true
   spotifyUrl?: true
+  readAt?: true
   createdAt?: true
 }
 
@@ -121,6 +126,7 @@ export type SongMessageCountAggregateInputType = {
   trackArtist?: true
   albumImage?: true
   spotifyUrl?: true
+  readAt?: true
   createdAt?: true
   _all?: true
 }
@@ -220,6 +226,7 @@ export type SongMessageGroupByOutputType = {
   trackArtist: string
   albumImage: string | null
   spotifyUrl: string | null
+  readAt: Date | null
   createdAt: Date
   _count: SongMessageCountAggregateOutputType | null
   _avg: SongMessageAvgAggregateOutputType | null
@@ -255,6 +262,7 @@ export type SongMessageWhereInput = {
   trackArtist?: Prisma.StringFilter<"SongMessage"> | string
   albumImage?: Prisma.StringNullableFilter<"SongMessage"> | string | null
   spotifyUrl?: Prisma.StringNullableFilter<"SongMessage"> | string | null
+  readAt?: Prisma.DateTimeNullableFilter<"SongMessage"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"SongMessage"> | Date | string
   chatRoom?: Prisma.XOR<Prisma.ChatRoomScalarRelationFilter, Prisma.ChatRoomWhereInput>
   sender?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -269,6 +277,7 @@ export type SongMessageOrderByWithRelationInput = {
   trackArtist?: Prisma.SortOrder
   albumImage?: Prisma.SortOrderInput | Prisma.SortOrder
   spotifyUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  readAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   chatRoom?: Prisma.ChatRoomOrderByWithRelationInput
   sender?: Prisma.UserOrderByWithRelationInput
@@ -287,6 +296,7 @@ export type SongMessageWhereUniqueInput = Prisma.AtLeast<{
   trackArtist?: Prisma.StringFilter<"SongMessage"> | string
   albumImage?: Prisma.StringNullableFilter<"SongMessage"> | string | null
   spotifyUrl?: Prisma.StringNullableFilter<"SongMessage"> | string | null
+  readAt?: Prisma.DateTimeNullableFilter<"SongMessage"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"SongMessage"> | Date | string
   chatRoom?: Prisma.XOR<Prisma.ChatRoomScalarRelationFilter, Prisma.ChatRoomWhereInput>
   sender?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -301,6 +311,7 @@ export type SongMessageOrderByWithAggregationInput = {
   trackArtist?: Prisma.SortOrder
   albumImage?: Prisma.SortOrderInput | Prisma.SortOrder
   spotifyUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  readAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.SongMessageCountOrderByAggregateInput
   _avg?: Prisma.SongMessageAvgOrderByAggregateInput
@@ -321,6 +332,7 @@ export type SongMessageScalarWhereWithAggregatesInput = {
   trackArtist?: Prisma.StringWithAggregatesFilter<"SongMessage"> | string
   albumImage?: Prisma.StringNullableWithAggregatesFilter<"SongMessage"> | string | null
   spotifyUrl?: Prisma.StringNullableWithAggregatesFilter<"SongMessage"> | string | null
+  readAt?: Prisma.DateTimeNullableWithAggregatesFilter<"SongMessage"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"SongMessage"> | Date | string
 }
 
@@ -330,6 +342,7 @@ export type SongMessageCreateInput = {
   trackArtist: string
   albumImage?: string | null
   spotifyUrl?: string | null
+  readAt?: Date | string | null
   createdAt?: Date | string
   chatRoom: Prisma.ChatRoomCreateNestedOneWithoutMessagesInput
   sender: Prisma.UserCreateNestedOneWithoutSentSongMessagesInput
@@ -344,6 +357,7 @@ export type SongMessageUncheckedCreateInput = {
   trackArtist: string
   albumImage?: string | null
   spotifyUrl?: string | null
+  readAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -353,6 +367,7 @@ export type SongMessageUpdateInput = {
   trackArtist?: Prisma.StringFieldUpdateOperationsInput | string
   albumImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   spotifyUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chatRoom?: Prisma.ChatRoomUpdateOneRequiredWithoutMessagesNestedInput
   sender?: Prisma.UserUpdateOneRequiredWithoutSentSongMessagesNestedInput
@@ -367,6 +382,7 @@ export type SongMessageUncheckedUpdateInput = {
   trackArtist?: Prisma.StringFieldUpdateOperationsInput | string
   albumImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   spotifyUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -379,6 +395,7 @@ export type SongMessageCreateManyInput = {
   trackArtist: string
   albumImage?: string | null
   spotifyUrl?: string | null
+  readAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -388,6 +405,7 @@ export type SongMessageUpdateManyMutationInput = {
   trackArtist?: Prisma.StringFieldUpdateOperationsInput | string
   albumImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   spotifyUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -400,6 +418,7 @@ export type SongMessageUncheckedUpdateManyInput = {
   trackArtist?: Prisma.StringFieldUpdateOperationsInput | string
   albumImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   spotifyUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -428,6 +447,7 @@ export type SongMessageCountOrderByAggregateInput = {
   trackArtist?: Prisma.SortOrder
   albumImage?: Prisma.SortOrder
   spotifyUrl?: Prisma.SortOrder
+  readAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -446,6 +466,7 @@ export type SongMessageMaxOrderByAggregateInput = {
   trackArtist?: Prisma.SortOrder
   albumImage?: Prisma.SortOrder
   spotifyUrl?: Prisma.SortOrder
+  readAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -458,6 +479,7 @@ export type SongMessageMinOrderByAggregateInput = {
   trackArtist?: Prisma.SortOrder
   albumImage?: Prisma.SortOrder
   spotifyUrl?: Prisma.SortOrder
+  readAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -551,12 +573,17 @@ export type SongMessageUncheckedUpdateManyWithoutChatRoomNestedInput = {
   deleteMany?: Prisma.SongMessageScalarWhereInput | Prisma.SongMessageScalarWhereInput[]
 }
 
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
+}
+
 export type SongMessageCreateWithoutSenderInput = {
   spotifyTrackId: string
   trackTitle: string
   trackArtist: string
   albumImage?: string | null
   spotifyUrl?: string | null
+  readAt?: Date | string | null
   createdAt?: Date | string
   chatRoom: Prisma.ChatRoomCreateNestedOneWithoutMessagesInput
 }
@@ -569,6 +596,7 @@ export type SongMessageUncheckedCreateWithoutSenderInput = {
   trackArtist: string
   albumImage?: string | null
   spotifyUrl?: string | null
+  readAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -610,6 +638,7 @@ export type SongMessageScalarWhereInput = {
   trackArtist?: Prisma.StringFilter<"SongMessage"> | string
   albumImage?: Prisma.StringNullableFilter<"SongMessage"> | string | null
   spotifyUrl?: Prisma.StringNullableFilter<"SongMessage"> | string | null
+  readAt?: Prisma.DateTimeNullableFilter<"SongMessage"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"SongMessage"> | Date | string
 }
 
@@ -619,6 +648,7 @@ export type SongMessageCreateWithoutChatRoomInput = {
   trackArtist: string
   albumImage?: string | null
   spotifyUrl?: string | null
+  readAt?: Date | string | null
   createdAt?: Date | string
   sender: Prisma.UserCreateNestedOneWithoutSentSongMessagesInput
 }
@@ -631,6 +661,7 @@ export type SongMessageUncheckedCreateWithoutChatRoomInput = {
   trackArtist: string
   albumImage?: string | null
   spotifyUrl?: string | null
+  readAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -668,6 +699,7 @@ export type SongMessageCreateManySenderInput = {
   trackArtist: string
   albumImage?: string | null
   spotifyUrl?: string | null
+  readAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -677,6 +709,7 @@ export type SongMessageUpdateWithoutSenderInput = {
   trackArtist?: Prisma.StringFieldUpdateOperationsInput | string
   albumImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   spotifyUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chatRoom?: Prisma.ChatRoomUpdateOneRequiredWithoutMessagesNestedInput
 }
@@ -689,6 +722,7 @@ export type SongMessageUncheckedUpdateWithoutSenderInput = {
   trackArtist?: Prisma.StringFieldUpdateOperationsInput | string
   albumImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   spotifyUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -700,6 +734,7 @@ export type SongMessageUncheckedUpdateManyWithoutSenderInput = {
   trackArtist?: Prisma.StringFieldUpdateOperationsInput | string
   albumImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   spotifyUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -711,6 +746,7 @@ export type SongMessageCreateManyChatRoomInput = {
   trackArtist: string
   albumImage?: string | null
   spotifyUrl?: string | null
+  readAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -720,6 +756,7 @@ export type SongMessageUpdateWithoutChatRoomInput = {
   trackArtist?: Prisma.StringFieldUpdateOperationsInput | string
   albumImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   spotifyUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sender?: Prisma.UserUpdateOneRequiredWithoutSentSongMessagesNestedInput
 }
@@ -732,6 +769,7 @@ export type SongMessageUncheckedUpdateWithoutChatRoomInput = {
   trackArtist?: Prisma.StringFieldUpdateOperationsInput | string
   albumImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   spotifyUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -743,6 +781,7 @@ export type SongMessageUncheckedUpdateManyWithoutChatRoomInput = {
   trackArtist?: Prisma.StringFieldUpdateOperationsInput | string
   albumImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   spotifyUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -757,6 +796,7 @@ export type SongMessageSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   trackArtist?: boolean
   albumImage?: boolean
   spotifyUrl?: boolean
+  readAt?: boolean
   createdAt?: boolean
   chatRoom?: boolean | Prisma.ChatRoomDefaultArgs<ExtArgs>
   sender?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -773,10 +813,11 @@ export type SongMessageSelectScalar = {
   trackArtist?: boolean
   albumImage?: boolean
   spotifyUrl?: boolean
+  readAt?: boolean
   createdAt?: boolean
 }
 
-export type SongMessageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "chatRoomId" | "senderId" | "spotifyTrackId" | "trackTitle" | "trackArtist" | "albumImage" | "spotifyUrl" | "createdAt", ExtArgs["result"]["songMessage"]>
+export type SongMessageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "chatRoomId" | "senderId" | "spotifyTrackId" | "trackTitle" | "trackArtist" | "albumImage" | "spotifyUrl" | "readAt" | "createdAt", ExtArgs["result"]["songMessage"]>
 export type SongMessageInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   chatRoom?: boolean | Prisma.ChatRoomDefaultArgs<ExtArgs>
   sender?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -797,6 +838,7 @@ export type $SongMessagePayload<ExtArgs extends runtime.Types.Extensions.Interna
     trackArtist: string
     albumImage: string | null
     spotifyUrl: string | null
+    readAt: Date | null
     createdAt: Date
   }, ExtArgs["result"]["songMessage"]>
   composites: {}
@@ -1177,6 +1219,7 @@ export interface SongMessageFieldRefs {
   readonly trackArtist: Prisma.FieldRef<"SongMessage", 'String'>
   readonly albumImage: Prisma.FieldRef<"SongMessage", 'String'>
   readonly spotifyUrl: Prisma.FieldRef<"SongMessage", 'String'>
+  readonly readAt: Prisma.FieldRef<"SongMessage", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"SongMessage", 'DateTime'>
 }
     

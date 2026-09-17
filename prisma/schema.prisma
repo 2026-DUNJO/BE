@@ -159,8 +159,13 @@ model SongMessage {
   albumImage     String? @db.Text
   spotifyUrl     String? @db.Text
 
+  // 상대방이 확인한 시간
+  // null = 아직 확인하지 않음
+  readAt DateTime?
+
   createdAt DateTime @default(now())
 
   @@index([chatRoomId])
   @@index([senderId])
+  @@index([chatRoomId, readAt])
 }

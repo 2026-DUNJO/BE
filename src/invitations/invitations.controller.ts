@@ -15,7 +15,6 @@ import {
 } from '../auth/auth.guard.js';
 
 import { CreateInvitationDto } from './dto/create-invitation.dto.js';
-
 import { InvitationsService } from './invitations.service.js';
 
 @Controller('invitations')
@@ -70,6 +69,23 @@ export class InvitationsController {
   }
 
   // =========================================
+  // 초대장 상세 조회
+  // =========================================
+
+  @UseGuards(AuthGuard)
+  @Get(':id')
+  async getOne(
+    @Req() request: AuthenticatedRequest,
+    @Param('id', ParseIntPipe)
+    invitationId: number,
+  ) {
+    return this.invitationsService.getOne(
+      request.user.sub,
+      invitationId,
+    );
+  }
+
+  // =========================================
   // 초대 거절
   // =========================================
 
@@ -77,7 +93,8 @@ export class InvitationsController {
   @Post(':id/reject')
   async reject(
     @Req() request: AuthenticatedRequest,
-    @Param('id', ParseIntPipe) invitationId: number,
+    @Param('id', ParseIntPipe)
+    invitationId: number,
   ) {
     return this.invitationsService.reject(
       request.user.sub,
@@ -93,11 +110,12 @@ export class InvitationsController {
   @Post(':id/accept')
   async accept(
     @Req() request: AuthenticatedRequest,
-    @Param('id', ParseIntPipe) invitationId: number,
+    @Param('id', ParseIntPipe)
+    invitationId: number,
   ) {
     return this.invitationsService.accept(
       request.user.sub,
       invitationId,
     );
   }
-} // ← InvitationsController가 여기서 끝나야 함
+}
