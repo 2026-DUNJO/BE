@@ -72,6 +72,10 @@ export class MatchingService {
   // =========================================
 
   async searchMatch(userId: number) {
+    console.log('\n========================================');
+    console.log(`🔍 MATCH SEARCH START - user ${userId}`);
+    console.log('========================================');
+
     // -----------------------------------------
     // 1. 내 최근 재생곡 조회
     // -----------------------------------------
@@ -82,10 +86,29 @@ export class MatchingService {
         20,
       )) as RecentTrack[];
 
+    console.log(
+      `🎵 내 최근곡 개수: ${myTracks.length}`,
+    );
+
+    console.log(
+      '🎵 내 최근곡:',
+      myTracks.map((track) => ({
+        title: track.title,
+        artist: track.artist,
+        spotifyTrackId:
+          track.spotifyTrackId,
+      })),
+    );
+
     if (myTracks.length === 0) {
+      console.log(
+        '❌ 매칭 종료: 내 최근 재생 기록 없음',
+      );
+
       return {
         matched: false,
-        message: '최근 재생 기록이 없습니다.',
+        message:
+          '최근 재생 기록이 없습니다.',
         candidates: [],
       };
     }
@@ -99,10 +122,29 @@ export class MatchingService {
         userId,
       );
 
+    console.log(
+      `📍 1km 이내 사용자 수: ${nearbyUsers.length}`,
+    );
+
+    console.log(
+      '📍 주변 사용자:',
+      nearbyUsers.map((user) => ({
+        id: user.id,
+        userId: user.userId,
+        nickname: user.nickname,
+        distanceKm: user.distanceKm,
+      })),
+    );
+
     if (nearbyUsers.length === 0) {
+      console.log(
+        '❌ 매칭 종료: 주변 사용자 없음',
+      );
+
       return {
         matched: false,
-        message: '1km 이내에 사용자가 없습니다.',
+        message:
+          '1km 이내에 사용자가 없습니다.',
         candidates: [],
       };
     }
@@ -127,9 +169,13 @@ export class MatchingService {
           myTrack.spotifyTrackId,
           similarTracks,
         );
+
+        console.log(
+          `🎧 Last.fm: ${myTrack.artist} - ${myTrack.title} → ${similarTracks.length}개`,
+        );
       } catch (error) {
         console.error(
-          `Last.fm 조회 실패: ${myTrack.artist} - ${myTrack.title}`,
+          `❌ Last.fm 조회 실패: ${myTrack.artist} - ${myTrack.title}`,
           error,
         );
 
@@ -149,6 +195,18 @@ export class MatchingService {
     const candidates = [];
 
     for (const nearbyUser of nearbyUsers) {
+      console.log(
+        '\n----------------------------------------',
+      );
+
+      console.log(
+        `👤 후보 비교 시작: ${nearbyUser.nickname} (${nearbyUser.id})`,
+      );
+
+      console.log(
+        '----------------------------------------',
+      );
+
       try {
         // 상대방 최근곡
         const otherTracks =
@@ -157,11 +215,34 @@ export class MatchingService {
             20,
           )) as RecentTrack[];
 
+        console.log(
+          `🎵 상대 최근곡 개수: ${otherTracks.length}`,
+        );
+
+        console.log(
+          '🎵 상대 최근곡:',
+          otherTracks.map(
+            (track) => ({
+              title: track.title,
+              artist: track.artist,
+              spotifyTrackId:
+                track.spotifyTrackId,
+            }),
+          ),
+        );
+
         if (otherTracks.length === 0) {
+          console.log(
+            '❌ 후보 제외: 상대 최근곡 없음',
+          );
+
           continue;
         }
 
+        // -------------------------------------
         // 곡 연결 탐색
+        // -------------------------------------
+
         const connections =
           this.findTrackConnectionsFromCache(
             myTracks,
@@ -169,25 +250,102 @@ export class MatchingService {
             mySimilarTracks,
           );
 
+        console.log(
+          `🔗 발견된 원본 연결 수: ${connections.length}`,
+        );
+
+        console.log(
+          '🔗 발견된 연결:',
+          connections.map(
+            (connection) => ({
+              myTrack:
+                `${connection.myTrack.artist} - ${connection.myTrack.title}`,
+
+              otherTrack:
+                `${connection.otherTrack.artist} - ${connection.otherTrack.title}`,
+
+              match:
+                connection.match,
+
+              type:
+                connection.connectionType,
+            }),
+          ),
+        );
+
+        // -------------------------------------
         // DUNJO 유사도 계산
+        // -------------------------------------
+
         const similarityResult =
           this.calculateDunjoSimilarity(
             myTracks,
             connections,
           );
 
+        console.log(
+          '\n📊 ===== DUNJO SCORE =====',
+        );
+
+        console.log(
+          `연결된 내 곡: ${similarityResult.connectedTrackCount}/${similarityResult.totalMyTrackCount}`,
+        );
+
+        console.log(
+          `Coverage: ${similarityResult.coverage}%`,
+        );
+
+        console.log(
+          `Strength: ${similarityResult.strength}%`,
+        );
+
+        console.log(
+          `최종 Similarity: ${similarityResult.similarity}`,
+        );
+
+        console.log(
+          `매칭 여부: ${
+            similarityResult.matched
+              ? '✅ MATCH'
+              : '❌ FAIL'
+          }`,
+        );
+
+        console.log(
+          '==========================\n',
+        );
+
         // -------------------------------------
         // 대표 연결곡 선정
-        //
-        // calculateDunjoSimilarity에서
-        // 각 내 곡의 strongest connection만 남기므로
-        // 그중 가장 강한 연결 하나를 대표로 사용
         // -------------------------------------
 
         const representativeConnection =
           this.getRepresentativeConnection(
             similarityResult.connections,
           );
+
+        if (representativeConnection) {
+          console.log(
+            '⭐ 대표 연결곡:',
+            {
+              myTrack:
+                `${representativeConnection.myTrack.artist} - ${representativeConnection.myTrack.title}`,
+
+              otherTrack:
+                `${representativeConnection.otherTrack.artist} - ${representativeConnection.otherTrack.title}`,
+
+              match:
+                representativeConnection.match,
+
+              type:
+                representativeConnection.connectionType,
+            },
+          );
+        } else {
+          console.log(
+            '⭐ 대표 연결곡 없음',
+          );
+        }
 
         // -------------------------------------
         // AI 분석
@@ -199,6 +357,10 @@ export class MatchingService {
         let ai: MatchAIResult | null = null;
 
         if (similarityResult.matched) {
+          console.log(
+            '🤖 70점 이상 → Groq 분석 시작',
+          );
+
           try {
             ai =
               await this.groqService.generateMatchAI(
@@ -207,21 +369,31 @@ export class MatchingService {
                 similarityResult.strength,
                 similarityResult.connections,
               );
+
+            console.log(
+              '🤖 Groq 분석 성공',
+            );
           } catch (error) {
             // AI 분석이 실패해도
             // 이미 성립된 MATCH 자체는 유지
             console.error(
-              `Groq 매칭 분석 실패: user ${nearbyUser.id}`,
+              `❌ Groq 매칭 분석 실패: user ${nearbyUser.id}`,
               error,
             );
           }
+        } else {
+          console.log(
+            `⛔ ${similarityResult.similarity}점 → 70점 미만`,
+          );
         }
 
         candidates.push({
           user: {
             id: nearbyUser.id,
-            userId: nearbyUser.userId,
-            nickname: nearbyUser.nickname,
+            userId:
+              nearbyUser.userId,
+            nickname:
+              nearbyUser.nickname,
           },
 
           distanceKm:
@@ -234,9 +406,8 @@ export class MatchingService {
           ai,
         });
       } catch (error) {
-        // 개발 중에는 에러 원인을 확인할 수 있도록 출력
         console.error(
-          `매칭 후보 처리 실패: user ${nearbyUser.id}`,
+          `❌ 매칭 후보 처리 실패: user ${nearbyUser.id}`,
           error,
         );
 
@@ -266,6 +437,61 @@ export class MatchingService {
           candidate.matched,
       );
 
+    // -----------------------------------------
+    // 최종 디버깅 결과
+    // -----------------------------------------
+
+    console.log(
+      '\n========================================',
+    );
+
+    console.log(
+      '🏁 MATCH SEARCH RESULT',
+    );
+
+    console.log(
+      `전체 후보: ${candidates.length}`,
+    );
+
+    console.log(
+      `매칭 성공: ${matches.length}`,
+    );
+
+    console.log(
+      '후보 점수:',
+      candidates.map(
+        (candidate) => ({
+          user:
+            candidate.user.nickname,
+
+          userId:
+            candidate.user.userId,
+
+          distanceKm:
+            candidate.distanceKm,
+
+          similarity:
+            candidate.similarity,
+
+          coverage:
+            candidate.coverage,
+
+          strength:
+            candidate.strength,
+
+          connectedTracks:
+            `${candidate.connectedTrackCount}/${candidate.totalMyTrackCount}`,
+
+          matched:
+            candidate.matched,
+        }),
+      ),
+    );
+
+    console.log(
+      '========================================\n',
+    );
+
     return {
       matched:
         matches.length > 0,
@@ -292,7 +518,8 @@ export class MatchingService {
       SimilarTrack[]
     >,
   ): TrackConnection[] {
-    const connections: TrackConnection[] = [];
+    const connections: TrackConnection[] =
+      [];
 
     for (const myTrack of myTracks) {
       // ---------------------------------------
@@ -387,7 +614,7 @@ export class MatchingService {
 
             artist:
               myTrack.artist,
-        
+
             albumImage:
               myTrack.albumImage,
 
@@ -525,9 +752,6 @@ export class MatchingService {
 
     // -----------------------------------------
     // Coverage
-    //
-    // 내 최근곡 중 몇 곡에서
-    // 상대와 접점이 발견됐는가
     // -----------------------------------------
 
     const connectedTrackCount =
@@ -539,8 +763,6 @@ export class MatchingService {
 
     // -----------------------------------------
     // Strength
-    //
-    // 연결된 곡들의 평균 연결 강도
     // -----------------------------------------
 
     let strength = 0;
@@ -566,10 +788,6 @@ export class MatchingService {
 
     // -----------------------------------------
     // Coverage 보정
-    //
-    // 취향이 완전히 같지 않아도
-    // 몇 개의 강한 접점이 있으면
-    // 매칭될 수 있도록 sqrt 사용
     // -----------------------------------------
 
     const adjustedCoverage =
