@@ -186,6 +186,41 @@ export class FriendshipsService {
   }
 
   // =========================================
+  // 두 사용자가 이미 친구인지 확인
+  // =========================================
+
+  async areFriends(
+    firstUserId: number,
+    secondUserId: number,
+  ): Promise<boolean> {
+    const user1Id = Math.min(
+      firstUserId,
+      secondUserId,
+    );
+
+    const user2Id = Math.max(
+      firstUserId,
+      secondUserId,
+    );
+
+    const friendship =
+      await this.prisma.friendship.findUnique({
+        where: {
+          user1Id_user2Id: {
+            user1Id,
+            user2Id,
+          },
+        },
+
+        select: {
+          id: true,
+        },
+      });
+
+    return !!friendship;
+  }
+
+  // =========================================
   // 친구 관계 삭제
   // =========================================
 

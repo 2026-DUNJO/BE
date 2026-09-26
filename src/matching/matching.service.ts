@@ -8,6 +8,7 @@ import {
 import { LastfmService } from '../lastfm/lastfm.service.js';
 import { LocationService } from '../location/location.service.js';
 import { SpotifyService } from '../spotify/spotify.service.js';
+import { FriendshipsService } from '../friendships/friendships.service.js';
 
 interface RecentTrack {
   spotifyTrackId: string;
@@ -65,6 +66,7 @@ export class MatchingService {
     private readonly locationService: LocationService,
     private readonly spotifyService: SpotifyService,
     private readonly groqService: GroqService,
+    private readonly friendshipsService: FriendshipsService,
   ) {}
 
   // =========================================
@@ -72,10 +74,6 @@ export class MatchingService {
   // =========================================
 
   async searchMatch(userId: number) {
-    console.log('\n========================================');
-    console.log(`🔍 MATCH SEARCH START - user ${userId}`);
-    console.log('========================================');
-
     // -----------------------------------------
     // 1. 내 최근 재생곡 조회
     // -----------------------------------------
@@ -86,35 +84,20 @@ export class MatchingService {
         20,
       )) as RecentTrack[];
 
-    console.log(
-      `🎵 내 최근곡 개수: ${myTracks.length}`,
-    );
-
-    console.log(
-      '🎵 내 최근곡:',
-      myTracks.map((track) => ({
-        title: track.title,
-        artist: track.artist,
-        spotifyTrackId:
-          track.spotifyTrackId,
-      })),
-    );
-
     if (myTracks.length === 0) {
-      console.log(
-        '❌ 매칭 종료: 내 최근 재생 기록 없음',
-      );
-
       return {
         matched: false,
-        message:
-          '최근 재생 기록이 없습니다.',
+        message: '최근 재생 기록이 없습니다.',
         candidates: [],
       };
     }
 
     // -----------------------------------------
     // 2. 1km 이내 사용자 조회
+    //
+    // 중요:
+    // 여기서는 친구도 제거하지 않는다.
+    // 따라서 nearby/listener에는 계속 표시된다.
     // -----------------------------------------
 
     const nearbyUsers =
@@ -122,36 +105,16 @@ export class MatchingService {
         userId,
       );
 
-    console.log(
-      `📍 1km 이내 사용자 수: ${nearbyUsers.length}`,
-    );
-
-    console.log(
-      '📍 주변 사용자:',
-      nearbyUsers.map((user) => ({
-        id: user.id,
-        userId: user.userId,
-        nickname: user.nickname,
-        distanceKm: user.distanceKm,
-      })),
-    );
-
     if (nearbyUsers.length === 0) {
-      console.log(
-        '❌ 매칭 종료: 주변 사용자 없음',
-      );
-
       return {
         matched: false,
-        message:
-          '1km 이내에 사용자가 없습니다.',
+        message: '1km 이내에 사용자가 없습니다.',
         candidates: [],
       };
     }
 
     // -----------------------------------------
     // 3. 내 곡들의 Last.fm Similar TOP 50
-    //    미리 한 번만 조회
     // -----------------------------------------
 
     const mySimilarTracks =
@@ -169,18 +132,12 @@ export class MatchingService {
           myTrack.spotifyTrackId,
           similarTracks,
         );
-
-        console.log(
-          `🎧 Last.fm: ${myTrack.artist} - ${myTrack.title} → ${similarTracks.length}개`,
-        );
       } catch (error) {
         console.error(
-          `❌ Last.fm 조회 실패: ${myTrack.artist} - ${myTrack.title}`,
+          `Last.fm 조회 실패: ${myTrack.artist} - ${myTrack.title}`,
           error,
         );
 
-        // 특정 곡에서 Last.fm 조회가 실패해도
-        // 전체 매칭은 계속 진행
         mySimilarTracks.set(
           myTrack.spotifyTrackId,
           [],
@@ -195,47 +152,42 @@ export class MatchingService {
     const candidates = [];
 
     for (const nearbyUser of nearbyUsers) {
-      console.log(
-        '\n----------------------------------------',
-      );
-
-      console.log(
-        `👤 후보 비교 시작: ${nearbyUser.nickname} (${nearbyUser.id})`,
-      );
-
-      console.log(
-        '----------------------------------------',
-      );
-
       try {
+        // =====================================
+        // 이미 친구인지 확인
+        //
+        // 친구라면:
+        // - 주변 Listener에는 계속 존재
+        // - 신규 음악 매칭에서는 제외
+        // - Match Success 다시 발생하지 않음
+        // - Spotify / Last.fm / Groq 호출도 절약
+        // =====================================
+
+        const alreadyFriend =
+          await this.friendshipsService.areFriends(
+            userId,
+            nearbyUser.id,
+          );
+
+        if (alreadyFriend) {
+          console.log(
+            `👥 이미 친구인 사용자 → 신규 매칭 제외: ${nearbyUser.nickname} (${nearbyUser.id})`,
+          );
+
+          continue;
+        }
+
+        // -------------------------------------
         // 상대방 최근곡
+        // -------------------------------------
+
         const otherTracks =
           (await this.spotifyService.getRecentlyPlayed(
             nearbyUser.id,
             20,
           )) as RecentTrack[];
 
-        console.log(
-          `🎵 상대 최근곡 개수: ${otherTracks.length}`,
-        );
-
-        console.log(
-          '🎵 상대 최근곡:',
-          otherTracks.map(
-            (track) => ({
-              title: track.title,
-              artist: track.artist,
-              spotifyTrackId:
-                track.spotifyTrackId,
-            }),
-          ),
-        );
-
         if (otherTracks.length === 0) {
-          console.log(
-            '❌ 후보 제외: 상대 최근곡 없음',
-          );
-
           continue;
         }
 
@@ -250,29 +202,6 @@ export class MatchingService {
             mySimilarTracks,
           );
 
-        console.log(
-          `🔗 발견된 원본 연결 수: ${connections.length}`,
-        );
-
-        console.log(
-          '🔗 발견된 연결:',
-          connections.map(
-            (connection) => ({
-              myTrack:
-                `${connection.myTrack.artist} - ${connection.myTrack.title}`,
-
-              otherTrack:
-                `${connection.otherTrack.artist} - ${connection.otherTrack.title}`,
-
-              match:
-                connection.match,
-
-              type:
-                connection.connectionType,
-            }),
-          ),
-        );
-
         // -------------------------------------
         // DUNJO 유사도 계산
         // -------------------------------------
@@ -283,38 +212,6 @@ export class MatchingService {
             connections,
           );
 
-        console.log(
-          '\n📊 ===== DUNJO SCORE =====',
-        );
-
-        console.log(
-          `연결된 내 곡: ${similarityResult.connectedTrackCount}/${similarityResult.totalMyTrackCount}`,
-        );
-
-        console.log(
-          `Coverage: ${similarityResult.coverage}%`,
-        );
-
-        console.log(
-          `Strength: ${similarityResult.strength}%`,
-        );
-
-        console.log(
-          `최종 Similarity: ${similarityResult.similarity}`,
-        );
-
-        console.log(
-          `매칭 여부: ${
-            similarityResult.matched
-              ? '✅ MATCH'
-              : '❌ FAIL'
-          }`,
-        );
-
-        console.log(
-          '==========================\n',
-        );
-
         // -------------------------------------
         // 대표 연결곡 선정
         // -------------------------------------
@@ -324,43 +221,16 @@ export class MatchingService {
             similarityResult.connections,
           );
 
-        if (representativeConnection) {
-          console.log(
-            '⭐ 대표 연결곡:',
-            {
-              myTrack:
-                `${representativeConnection.myTrack.artist} - ${representativeConnection.myTrack.title}`,
-
-              otherTrack:
-                `${representativeConnection.otherTrack.artist} - ${representativeConnection.otherTrack.title}`,
-
-              match:
-                representativeConnection.match,
-
-              type:
-                representativeConnection.connectionType,
-            },
-          );
-        } else {
-          console.log(
-            '⭐ 대표 연결곡 없음',
-          );
-        }
-
         // -------------------------------------
         // AI 분석
         //
-        // 70점 이상으로 이미 MATCH가 확정된
+        // 70점 이상으로 MATCH가 확정된
         // 사용자에게만 Groq 호출
         // -------------------------------------
 
         let ai: MatchAIResult | null = null;
 
         if (similarityResult.matched) {
-          console.log(
-            '🤖 70점 이상 → Groq 분석 시작',
-          );
-
           try {
             ai =
               await this.groqService.generateMatchAI(
@@ -369,31 +239,19 @@ export class MatchingService {
                 similarityResult.strength,
                 similarityResult.connections,
               );
-
-            console.log(
-              '🤖 Groq 분석 성공',
-            );
           } catch (error) {
-            // AI 분석이 실패해도
-            // 이미 성립된 MATCH 자체는 유지
             console.error(
-              `❌ Groq 매칭 분석 실패: user ${nearbyUser.id}`,
+              `Groq 매칭 분석 실패: user ${nearbyUser.id}`,
               error,
             );
           }
-        } else {
-          console.log(
-            `⛔ ${similarityResult.similarity}점 → 70점 미만`,
-          );
         }
 
         candidates.push({
           user: {
             id: nearbyUser.id,
-            userId:
-              nearbyUser.userId,
-            nickname:
-              nearbyUser.nickname,
+            userId: nearbyUser.userId,
+            nickname: nearbyUser.nickname,
           },
 
           distanceKm:
@@ -407,12 +265,10 @@ export class MatchingService {
         });
       } catch (error) {
         console.error(
-          `❌ 매칭 후보 처리 실패: user ${nearbyUser.id}`,
+          `매칭 후보 처리 실패: user ${nearbyUser.id}`,
           error,
         );
 
-        // Spotify 미연결 등 특정 사용자 문제로
-        // 전체 검색이 중단되지 않도록 건너뜀
         continue;
       }
     }
@@ -428,7 +284,10 @@ export class MatchingService {
     );
 
     // -----------------------------------------
-    // 6. 70점 이상만 실제 매칭
+    // 6. 70점 이상만 실제 신규 매칭
+    //
+    // 이미 친구인 사용자는 위에서 continue 되었기
+    // 때문에 여기까지 들어오지 않는다.
     // -----------------------------------------
 
     const matches =
@@ -437,68 +296,12 @@ export class MatchingService {
           candidate.matched,
       );
 
-    // -----------------------------------------
-    // 최종 디버깅 결과
-    // -----------------------------------------
-
-    console.log(
-      '\n========================================',
-    );
-
-    console.log(
-      '🏁 MATCH SEARCH RESULT',
-    );
-
-    console.log(
-      `전체 후보: ${candidates.length}`,
-    );
-
-    console.log(
-      `매칭 성공: ${matches.length}`,
-    );
-
-    console.log(
-      '후보 점수:',
-      candidates.map(
-        (candidate) => ({
-          user:
-            candidate.user.nickname,
-
-          userId:
-            candidate.user.userId,
-
-          distanceKm:
-            candidate.distanceKm,
-
-          similarity:
-            candidate.similarity,
-
-          coverage:
-            candidate.coverage,
-
-          strength:
-            candidate.strength,
-
-          connectedTracks:
-            `${candidate.connectedTrackCount}/${candidate.totalMyTrackCount}`,
-
-          matched:
-            candidate.matched,
-        }),
-      ),
-    );
-
-    console.log(
-      '========================================\n',
-    );
-
     return {
       matched:
         matches.length > 0,
 
       matches,
 
-      // 개발 중 점수 확인용
       candidates,
     };
   }
@@ -518,8 +321,7 @@ export class MatchingService {
       SimilarTrack[]
     >,
   ): TrackConnection[] {
-    const connections: TrackConnection[] =
-      [];
+    const connections: TrackConnection[] = [];
 
     for (const myTrack of myTracks) {
       // ---------------------------------------
@@ -569,15 +371,12 @@ export class MatchingService {
               sameTrack.spotifyUrl,
           },
 
-          // 완전히 동일한 Spotify 곡
           match: 1,
 
           connectionType:
             'SAME_TRACK',
         });
 
-        // 동일곡을 찾았으면
-        // 이 곡은 Last.fm 비교 불필요
         continue;
       }
 
@@ -815,7 +614,6 @@ export class MatchingService {
     return {
       similarity,
 
-      // API에는 실제 Coverage %를 반환
       coverage:
         Math.round(
           coverage * 10000,
@@ -852,10 +650,6 @@ export class MatchingService {
 
     return connections.reduce(
       (best, current) => {
-        // -------------------------------------
-        // 연결 강도가 더 높은 것을 우선
-        // -------------------------------------
-
         if (
           current.match >
           best.match
@@ -869,10 +663,6 @@ export class MatchingService {
         ) {
           return best;
         }
-
-        // -------------------------------------
-        // 강도가 같다면 동일곡을 우선
-        // -------------------------------------
 
         if (
           current.connectionType ===
