@@ -202,22 +202,12 @@ export const JsonNullValueInput = {
 export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
-export const UserOrderByRelevanceFieldEnum = {
-  userId: 'userId',
-  passwordHash: 'passwordHash',
-  nickname: 'nickname'
+export const QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
 } as const
 
-export type UserOrderByRelevanceFieldEnum = (typeof UserOrderByRelevanceFieldEnum)[keyof typeof UserOrderByRelevanceFieldEnum]
-
-
-export const SpotifyAccountOrderByRelevanceFieldEnum = {
-  spotifyUserId: 'spotifyUserId',
-  accessToken: 'accessToken',
-  refreshToken: 'refreshToken'
-} as const
-
-export type SpotifyAccountOrderByRelevanceFieldEnum = (typeof SpotifyAccountOrderByRelevanceFieldEnum)[keyof typeof SpotifyAccountOrderByRelevanceFieldEnum]
+export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
 
 
 export const JsonNullValueFilter = {
@@ -229,50 +219,10 @@ export const JsonNullValueFilter = {
 export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
-export const QueryMode = {
-  default: 'default',
-  insensitive: 'insensitive'
-} as const
-
-export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
-
-
 export const NullsOrder = {
   first: 'first',
   last: 'last'
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
-
-
-export const TrackAnalysisOrderByRelevanceFieldEnum = {
-  spotifyTrackId: 'spotifyTrackId',
-  title: 'title',
-  artist: 'artist',
-  albumImage: 'albumImage'
-} as const
-
-export type TrackAnalysisOrderByRelevanceFieldEnum = (typeof TrackAnalysisOrderByRelevanceFieldEnum)[keyof typeof TrackAnalysisOrderByRelevanceFieldEnum]
-
-
-export const InvitationOrderByRelevanceFieldEnum = {
-  spotifyTrackId: 'spotifyTrackId',
-  trackTitle: 'trackTitle',
-  trackArtist: 'trackArtist',
-  albumImage: 'albumImage',
-  spotifyUrl: 'spotifyUrl'
-} as const
-
-export type InvitationOrderByRelevanceFieldEnum = (typeof InvitationOrderByRelevanceFieldEnum)[keyof typeof InvitationOrderByRelevanceFieldEnum]
-
-
-export const SongMessageOrderByRelevanceFieldEnum = {
-  spotifyTrackId: 'spotifyTrackId',
-  trackTitle: 'trackTitle',
-  trackArtist: 'trackArtist',
-  albumImage: 'albumImage',
-  spotifyUrl: 'spotifyUrl'
-} as const
-
-export type SongMessageOrderByRelevanceFieldEnum = (typeof SongMessageOrderByRelevanceFieldEnum)[keyof typeof SongMessageOrderByRelevanceFieldEnum]
 

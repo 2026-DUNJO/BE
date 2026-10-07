@@ -257,7 +257,6 @@ export type SpotifyAccountOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
-  _relevance?: Prisma.SpotifyAccountOrderByRelevanceInput
 }
 
 export type SpotifyAccountWhereUniqueInput = Prisma.AtLeast<{
@@ -381,12 +380,6 @@ export type SpotifyAccountUncheckedUpdateManyInput = {
 export type SpotifyAccountNullableScalarRelationFilter = {
   is?: Prisma.SpotifyAccountWhereInput | null
   isNot?: Prisma.SpotifyAccountWhereInput | null
-}
-
-export type SpotifyAccountOrderByRelevanceInput = {
-  fields: Prisma.SpotifyAccountOrderByRelevanceFieldEnum | Prisma.SpotifyAccountOrderByRelevanceFieldEnum[]
-  sort: Prisma.SortOrder
-  search: string
 }
 
 export type SpotifyAccountCountOrderByAggregateInput = {
@@ -532,7 +525,29 @@ export type SpotifyAccountSelect<ExtArgs extends runtime.Types.Extensions.Intern
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["spotifyAccount"]>
 
+export type SpotifyAccountSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  userId?: boolean
+  spotifyUserId?: boolean
+  accessToken?: boolean
+  refreshToken?: boolean
+  expiresAt?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}, ExtArgs["result"]["spotifyAccount"]>
 
+export type SpotifyAccountSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  userId?: boolean
+  spotifyUserId?: boolean
+  accessToken?: boolean
+  refreshToken?: boolean
+  expiresAt?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}, ExtArgs["result"]["spotifyAccount"]>
 
 export type SpotifyAccountSelectScalar = {
   id?: boolean
@@ -547,6 +562,12 @@ export type SpotifyAccountSelectScalar = {
 
 export type SpotifyAccountOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "spotifyUserId" | "accessToken" | "refreshToken" | "expiresAt" | "createdAt" | "updatedAt", ExtArgs["result"]["spotifyAccount"]>
 export type SpotifyAccountInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type SpotifyAccountIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type SpotifyAccountIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
@@ -682,6 +703,30 @@ export interface SpotifyAccountDelegate<ExtArgs extends runtime.Types.Extensions
   createMany<T extends SpotifyAccountCreateManyArgs>(args?: Prisma.SelectSubset<T, SpotifyAccountCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
+   * Create many SpotifyAccounts and returns the data saved in the database.
+   * @param {SpotifyAccountCreateManyAndReturnArgs} args - Arguments to create many SpotifyAccounts.
+   * @example
+   * // Create many SpotifyAccounts
+   * const spotifyAccount = await prisma.spotifyAccount.createManyAndReturn({
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Create many SpotifyAccounts and only return the `id`
+   * const spotifyAccountWithIdOnly = await prisma.spotifyAccount.createManyAndReturn({
+   *   select: { id: true },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  createManyAndReturn<T extends SpotifyAccountCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, SpotifyAccountCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SpotifyAccountPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+  /**
    * Delete a SpotifyAccount.
    * @param {SpotifyAccountDeleteArgs} args - Arguments to delete one SpotifyAccount.
    * @example
@@ -744,6 +789,36 @@ export interface SpotifyAccountDelegate<ExtArgs extends runtime.Types.Extensions
    * 
    */
   updateMany<T extends SpotifyAccountUpdateManyArgs>(args: Prisma.SelectSubset<T, SpotifyAccountUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
+
+  /**
+   * Update zero or more SpotifyAccounts and returns the data updated in the database.
+   * @param {SpotifyAccountUpdateManyAndReturnArgs} args - Arguments to update many SpotifyAccounts.
+   * @example
+   * // Update many SpotifyAccounts
+   * const spotifyAccount = await prisma.spotifyAccount.updateManyAndReturn({
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Update zero or more SpotifyAccounts and only return the `id`
+   * const spotifyAccountWithIdOnly = await prisma.spotifyAccount.updateManyAndReturn({
+   *   select: { id: true },
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  updateManyAndReturn<T extends SpotifyAccountUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, SpotifyAccountUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SpotifyAccountPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
   /**
    * Create or update one SpotifyAccount.
@@ -1180,6 +1255,29 @@ export type SpotifyAccountCreateManyArgs<ExtArgs extends runtime.Types.Extension
 }
 
 /**
+ * SpotifyAccount createManyAndReturn
+ */
+export type SpotifyAccountCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SpotifyAccount
+   */
+  select?: Prisma.SpotifyAccountSelectCreateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the SpotifyAccount
+   */
+  omit?: Prisma.SpotifyAccountOmit<ExtArgs> | null
+  /**
+   * The data used to create many SpotifyAccounts.
+   */
+  data: Prisma.SpotifyAccountCreateManyInput | Prisma.SpotifyAccountCreateManyInput[]
+  skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SpotifyAccountIncludeCreateManyAndReturn<ExtArgs> | null
+}
+
+/**
  * SpotifyAccount update
  */
 export type SpotifyAccountUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1221,6 +1319,36 @@ export type SpotifyAccountUpdateManyArgs<ExtArgs extends runtime.Types.Extension
    * Limit how many SpotifyAccounts to update.
    */
   limit?: number
+}
+
+/**
+ * SpotifyAccount updateManyAndReturn
+ */
+export type SpotifyAccountUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SpotifyAccount
+   */
+  select?: Prisma.SpotifyAccountSelectUpdateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the SpotifyAccount
+   */
+  omit?: Prisma.SpotifyAccountOmit<ExtArgs> | null
+  /**
+   * The data used to update SpotifyAccounts.
+   */
+  data: Prisma.XOR<Prisma.SpotifyAccountUpdateManyMutationInput, Prisma.SpotifyAccountUncheckedUpdateManyInput>
+  /**
+   * Filter which SpotifyAccounts to update
+   */
+  where?: Prisma.SpotifyAccountWhereInput
+  /**
+   * Limit how many SpotifyAccounts to update.
+   */
+  limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SpotifyAccountIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**

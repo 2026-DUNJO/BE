@@ -312,7 +312,6 @@ export type TrackAnalysisOrderByWithRelationInput = {
   moodTags?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  _relevance?: Prisma.TrackAnalysisOrderByRelevanceInput
 }
 
 export type TrackAnalysisWhereUniqueInput = Prisma.AtLeast<{
@@ -483,12 +482,6 @@ export type TrackAnalysisUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type TrackAnalysisOrderByRelevanceInput = {
-  fields: Prisma.TrackAnalysisOrderByRelevanceFieldEnum | Prisma.TrackAnalysisOrderByRelevanceFieldEnum[]
-  sort: Prisma.SortOrder
-  search: string
-}
-
 export type TrackAnalysisCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   spotifyTrackId?: Prisma.SortOrder
@@ -575,7 +568,37 @@ export type TrackAnalysisSelect<ExtArgs extends runtime.Types.Extensions.Interna
   updatedAt?: boolean
 }, ExtArgs["result"]["trackAnalysis"]>
 
+export type TrackAnalysisSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  spotifyTrackId?: boolean
+  title?: boolean
+  artist?: boolean
+  albumImage?: boolean
+  energy?: boolean
+  dreaminess?: boolean
+  confidence?: boolean
+  darkness?: boolean
+  danceability?: boolean
+  moodTags?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
+}, ExtArgs["result"]["trackAnalysis"]>
 
+export type TrackAnalysisSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  spotifyTrackId?: boolean
+  title?: boolean
+  artist?: boolean
+  albumImage?: boolean
+  energy?: boolean
+  dreaminess?: boolean
+  confidence?: boolean
+  darkness?: boolean
+  danceability?: boolean
+  moodTags?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
+}, ExtArgs["result"]["trackAnalysis"]>
 
 export type TrackAnalysisSelectScalar = {
   id?: boolean
@@ -730,6 +753,30 @@ export interface TrackAnalysisDelegate<ExtArgs extends runtime.Types.Extensions.
   createMany<T extends TrackAnalysisCreateManyArgs>(args?: Prisma.SelectSubset<T, TrackAnalysisCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
+   * Create many TrackAnalyses and returns the data saved in the database.
+   * @param {TrackAnalysisCreateManyAndReturnArgs} args - Arguments to create many TrackAnalyses.
+   * @example
+   * // Create many TrackAnalyses
+   * const trackAnalysis = await prisma.trackAnalysis.createManyAndReturn({
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Create many TrackAnalyses and only return the `id`
+   * const trackAnalysisWithIdOnly = await prisma.trackAnalysis.createManyAndReturn({
+   *   select: { id: true },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  createManyAndReturn<T extends TrackAnalysisCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, TrackAnalysisCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TrackAnalysisPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+  /**
    * Delete a TrackAnalysis.
    * @param {TrackAnalysisDeleteArgs} args - Arguments to delete one TrackAnalysis.
    * @example
@@ -792,6 +839,36 @@ export interface TrackAnalysisDelegate<ExtArgs extends runtime.Types.Extensions.
    * 
    */
   updateMany<T extends TrackAnalysisUpdateManyArgs>(args: Prisma.SelectSubset<T, TrackAnalysisUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
+
+  /**
+   * Update zero or more TrackAnalyses and returns the data updated in the database.
+   * @param {TrackAnalysisUpdateManyAndReturnArgs} args - Arguments to update many TrackAnalyses.
+   * @example
+   * // Update many TrackAnalyses
+   * const trackAnalysis = await prisma.trackAnalysis.updateManyAndReturn({
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Update zero or more TrackAnalyses and only return the `id`
+   * const trackAnalysisWithIdOnly = await prisma.trackAnalysis.updateManyAndReturn({
+   *   select: { id: true },
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  updateManyAndReturn<T extends TrackAnalysisUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, TrackAnalysisUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TrackAnalysisPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
   /**
    * Create or update one TrackAnalysis.
@@ -1208,6 +1285,25 @@ export type TrackAnalysisCreateManyArgs<ExtArgs extends runtime.Types.Extensions
 }
 
 /**
+ * TrackAnalysis createManyAndReturn
+ */
+export type TrackAnalysisCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TrackAnalysis
+   */
+  select?: Prisma.TrackAnalysisSelectCreateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the TrackAnalysis
+   */
+  omit?: Prisma.TrackAnalysisOmit<ExtArgs> | null
+  /**
+   * The data used to create many TrackAnalyses.
+   */
+  data: Prisma.TrackAnalysisCreateManyInput | Prisma.TrackAnalysisCreateManyInput[]
+  skipDuplicates?: boolean
+}
+
+/**
  * TrackAnalysis update
  */
 export type TrackAnalysisUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1233,6 +1329,32 @@ export type TrackAnalysisUpdateArgs<ExtArgs extends runtime.Types.Extensions.Int
  * TrackAnalysis updateMany
  */
 export type TrackAnalysisUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * The data used to update TrackAnalyses.
+   */
+  data: Prisma.XOR<Prisma.TrackAnalysisUpdateManyMutationInput, Prisma.TrackAnalysisUncheckedUpdateManyInput>
+  /**
+   * Filter which TrackAnalyses to update
+   */
+  where?: Prisma.TrackAnalysisWhereInput
+  /**
+   * Limit how many TrackAnalyses to update.
+   */
+  limit?: number
+}
+
+/**
+ * TrackAnalysis updateManyAndReturn
+ */
+export type TrackAnalysisUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TrackAnalysis
+   */
+  select?: Prisma.TrackAnalysisSelectUpdateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the TrackAnalysis
+   */
+  omit?: Prisma.TrackAnalysisOmit<ExtArgs> | null
   /**
    * The data used to update TrackAnalyses.
    */

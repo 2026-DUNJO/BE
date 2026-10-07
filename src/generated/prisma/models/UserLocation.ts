@@ -464,7 +464,23 @@ export type UserLocationSelect<ExtArgs extends runtime.Types.Extensions.Internal
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["userLocation"]>
 
+export type UserLocationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  userId?: boolean
+  latitude?: boolean
+  longitude?: boolean
+  updatedAt?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}, ExtArgs["result"]["userLocation"]>
 
+export type UserLocationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  userId?: boolean
+  latitude?: boolean
+  longitude?: boolean
+  updatedAt?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}, ExtArgs["result"]["userLocation"]>
 
 export type UserLocationSelectScalar = {
   id?: boolean
@@ -476,6 +492,12 @@ export type UserLocationSelectScalar = {
 
 export type UserLocationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "latitude" | "longitude" | "updatedAt", ExtArgs["result"]["userLocation"]>
 export type UserLocationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type UserLocationIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type UserLocationIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
@@ -608,6 +630,30 @@ export interface UserLocationDelegate<ExtArgs extends runtime.Types.Extensions.I
   createMany<T extends UserLocationCreateManyArgs>(args?: Prisma.SelectSubset<T, UserLocationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
+   * Create many UserLocations and returns the data saved in the database.
+   * @param {UserLocationCreateManyAndReturnArgs} args - Arguments to create many UserLocations.
+   * @example
+   * // Create many UserLocations
+   * const userLocation = await prisma.userLocation.createManyAndReturn({
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Create many UserLocations and only return the `id`
+   * const userLocationWithIdOnly = await prisma.userLocation.createManyAndReturn({
+   *   select: { id: true },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  createManyAndReturn<T extends UserLocationCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, UserLocationCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserLocationPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+  /**
    * Delete a UserLocation.
    * @param {UserLocationDeleteArgs} args - Arguments to delete one UserLocation.
    * @example
@@ -670,6 +716,36 @@ export interface UserLocationDelegate<ExtArgs extends runtime.Types.Extensions.I
    * 
    */
   updateMany<T extends UserLocationUpdateManyArgs>(args: Prisma.SelectSubset<T, UserLocationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
+
+  /**
+   * Update zero or more UserLocations and returns the data updated in the database.
+   * @param {UserLocationUpdateManyAndReturnArgs} args - Arguments to update many UserLocations.
+   * @example
+   * // Update many UserLocations
+   * const userLocation = await prisma.userLocation.updateManyAndReturn({
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Update zero or more UserLocations and only return the `id`
+   * const userLocationWithIdOnly = await prisma.userLocation.updateManyAndReturn({
+   *   select: { id: true },
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  updateManyAndReturn<T extends UserLocationUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, UserLocationUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserLocationPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
   /**
    * Create or update one UserLocation.
@@ -1103,6 +1179,29 @@ export type UserLocationCreateManyArgs<ExtArgs extends runtime.Types.Extensions.
 }
 
 /**
+ * UserLocation createManyAndReturn
+ */
+export type UserLocationCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserLocation
+   */
+  select?: Prisma.UserLocationSelectCreateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserLocation
+   */
+  omit?: Prisma.UserLocationOmit<ExtArgs> | null
+  /**
+   * The data used to create many UserLocations.
+   */
+  data: Prisma.UserLocationCreateManyInput | Prisma.UserLocationCreateManyInput[]
+  skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserLocationIncludeCreateManyAndReturn<ExtArgs> | null
+}
+
+/**
  * UserLocation update
  */
 export type UserLocationUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1144,6 +1243,36 @@ export type UserLocationUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.
    * Limit how many UserLocations to update.
    */
   limit?: number
+}
+
+/**
+ * UserLocation updateManyAndReturn
+ */
+export type UserLocationUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserLocation
+   */
+  select?: Prisma.UserLocationSelectUpdateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserLocation
+   */
+  omit?: Prisma.UserLocationOmit<ExtArgs> | null
+  /**
+   * The data used to update UserLocations.
+   */
+  data: Prisma.XOR<Prisma.UserLocationUpdateManyMutationInput, Prisma.UserLocationUncheckedUpdateManyInput>
+  /**
+   * Filter which UserLocations to update
+   */
+  where?: Prisma.UserLocationWhereInput
+  /**
+   * Limit how many UserLocations to update.
+   */
+  limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserLocationIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**

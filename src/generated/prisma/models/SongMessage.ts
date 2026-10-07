@@ -281,7 +281,6 @@ export type SongMessageOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   chatRoom?: Prisma.ChatRoomOrderByWithRelationInput
   sender?: Prisma.UserOrderByWithRelationInput
-  _relevance?: Prisma.SongMessageOrderByRelevanceInput
 }
 
 export type SongMessageWhereUniqueInput = Prisma.AtLeast<{
@@ -430,12 +429,6 @@ export type SongMessageListRelationFilter = {
 
 export type SongMessageOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
-}
-
-export type SongMessageOrderByRelevanceInput = {
-  fields: Prisma.SongMessageOrderByRelevanceFieldEnum | Prisma.SongMessageOrderByRelevanceFieldEnum[]
-  sort: Prisma.SortOrder
-  search: string
 }
 
 export type SongMessageCountOrderByAggregateInput = {
@@ -802,7 +795,35 @@ export type SongMessageSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   sender?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["songMessage"]>
 
+export type SongMessageSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  chatRoomId?: boolean
+  senderId?: boolean
+  spotifyTrackId?: boolean
+  trackTitle?: boolean
+  trackArtist?: boolean
+  albumImage?: boolean
+  spotifyUrl?: boolean
+  readAt?: boolean
+  createdAt?: boolean
+  chatRoom?: boolean | Prisma.ChatRoomDefaultArgs<ExtArgs>
+  sender?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}, ExtArgs["result"]["songMessage"]>
 
+export type SongMessageSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  chatRoomId?: boolean
+  senderId?: boolean
+  spotifyTrackId?: boolean
+  trackTitle?: boolean
+  trackArtist?: boolean
+  albumImage?: boolean
+  spotifyUrl?: boolean
+  readAt?: boolean
+  createdAt?: boolean
+  chatRoom?: boolean | Prisma.ChatRoomDefaultArgs<ExtArgs>
+  sender?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}, ExtArgs["result"]["songMessage"]>
 
 export type SongMessageSelectScalar = {
   id?: boolean
@@ -819,6 +840,14 @@ export type SongMessageSelectScalar = {
 
 export type SongMessageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "chatRoomId" | "senderId" | "spotifyTrackId" | "trackTitle" | "trackArtist" | "albumImage" | "spotifyUrl" | "readAt" | "createdAt", ExtArgs["result"]["songMessage"]>
 export type SongMessageInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  chatRoom?: boolean | Prisma.ChatRoomDefaultArgs<ExtArgs>
+  sender?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type SongMessageIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  chatRoom?: boolean | Prisma.ChatRoomDefaultArgs<ExtArgs>
+  sender?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type SongMessageIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   chatRoom?: boolean | Prisma.ChatRoomDefaultArgs<ExtArgs>
   sender?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -958,6 +987,30 @@ export interface SongMessageDelegate<ExtArgs extends runtime.Types.Extensions.In
   createMany<T extends SongMessageCreateManyArgs>(args?: Prisma.SelectSubset<T, SongMessageCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
+   * Create many SongMessages and returns the data saved in the database.
+   * @param {SongMessageCreateManyAndReturnArgs} args - Arguments to create many SongMessages.
+   * @example
+   * // Create many SongMessages
+   * const songMessage = await prisma.songMessage.createManyAndReturn({
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Create many SongMessages and only return the `id`
+   * const songMessageWithIdOnly = await prisma.songMessage.createManyAndReturn({
+   *   select: { id: true },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  createManyAndReturn<T extends SongMessageCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, SongMessageCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SongMessagePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+  /**
    * Delete a SongMessage.
    * @param {SongMessageDeleteArgs} args - Arguments to delete one SongMessage.
    * @example
@@ -1020,6 +1073,36 @@ export interface SongMessageDelegate<ExtArgs extends runtime.Types.Extensions.In
    * 
    */
   updateMany<T extends SongMessageUpdateManyArgs>(args: Prisma.SelectSubset<T, SongMessageUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
+
+  /**
+   * Update zero or more SongMessages and returns the data updated in the database.
+   * @param {SongMessageUpdateManyAndReturnArgs} args - Arguments to update many SongMessages.
+   * @example
+   * // Update many SongMessages
+   * const songMessage = await prisma.songMessage.updateManyAndReturn({
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Update zero or more SongMessages and only return the `id`
+   * const songMessageWithIdOnly = await prisma.songMessage.updateManyAndReturn({
+   *   select: { id: true },
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  updateManyAndReturn<T extends SongMessageUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, SongMessageUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SongMessagePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
   /**
    * Create or update one SongMessage.
@@ -1459,6 +1542,29 @@ export type SongMessageCreateManyArgs<ExtArgs extends runtime.Types.Extensions.I
 }
 
 /**
+ * SongMessage createManyAndReturn
+ */
+export type SongMessageCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SongMessage
+   */
+  select?: Prisma.SongMessageSelectCreateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the SongMessage
+   */
+  omit?: Prisma.SongMessageOmit<ExtArgs> | null
+  /**
+   * The data used to create many SongMessages.
+   */
+  data: Prisma.SongMessageCreateManyInput | Prisma.SongMessageCreateManyInput[]
+  skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SongMessageIncludeCreateManyAndReturn<ExtArgs> | null
+}
+
+/**
  * SongMessage update
  */
 export type SongMessageUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1500,6 +1606,36 @@ export type SongMessageUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * Limit how many SongMessages to update.
    */
   limit?: number
+}
+
+/**
+ * SongMessage updateManyAndReturn
+ */
+export type SongMessageUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SongMessage
+   */
+  select?: Prisma.SongMessageSelectUpdateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the SongMessage
+   */
+  omit?: Prisma.SongMessageOmit<ExtArgs> | null
+  /**
+   * The data used to update SongMessages.
+   */
+  data: Prisma.XOR<Prisma.SongMessageUpdateManyMutationInput, Prisma.SongMessageUncheckedUpdateManyInput>
+  /**
+   * Filter which SongMessages to update
+   */
+  where?: Prisma.SongMessageWhereInput
+  /**
+   * Limit how many SongMessages to update.
+   */
+  limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SongMessageIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
